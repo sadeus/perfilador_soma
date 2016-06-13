@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name polulu_a4988)(type KiCad)(uri "$(KIPRJMOD)\\library\\polulu_a4988.pretty")(options "")(descr ""))
+)
