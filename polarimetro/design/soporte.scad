@@ -15,10 +15,10 @@ rC = m * zC / (2 * PI);
 
 
 //Soporte
-union() {
+! union() {
     difference(){
         translate([10,0,0]){
-            cube([50, distCage-dVarillaCage*1.1, 20],center=true);
+            cube([50, distCage-dVarillaCage*1.1, 10],center=true);
         }
         cylinder(d=dExt*1.1,h=20,center=true);
         
@@ -26,34 +26,34 @@ union() {
             cylinder(d=5,h=50,$fn=50,center=true);
         }
         
-        //Agujero pasante para roscado a mesa
-        rotate([0,90,0]){
-            union(){
-                cylinder(d=10,h=60,center=true, $fn=20);
-                
-                 translate([0,0,10]){
-                    
-                    cylinder(d=6,h=60,center = true,$fn=20);
-                 }
         
-            }
-        }
 
     }
     
     //Soporte del motor
-    translate([rG+rC,0,-20]){
+    translate([rG+rC,0,-10]){
         difference(){
             cube([25,distCage-dVarillaCage*1.1,20],center=true);
-            cube([20,20,40],center=true);
+            cube([20.5,20.5,40],center=true);
             
         }
     }
     
-    translate([0,0,-20]){
+    translate([0,0,-10]){
         difference(){
-            cylinder(d=dPol*1.2,h=20,center=true,$fn=20);
+            cylinder(d=dPol+3,h=20,center=true,$fn=20);
             cylinder(d=10,h=20,center=true,$fn=20);
+        }
+    }
+    
+    
+    translate([50-10,0,-5]){
+        difference(){
+            cube([20,35,40],center=true);
+            hRiel = 6;
+            translate([5,0,0]){
+                cube([10,20,40],center=true);
+            }
         }
     }
 }
@@ -89,7 +89,7 @@ union(){
 translate([rG+rC,0,15]){
         difference(){
                     gear(mm_per_tooth = m, number_of_teeth = zC, thickness = 10);
-        cylinder(d=5,h=20,$fn=50,center=true);
+        cylinder(d=4,h=20,$fn=50,center=true);
     }
     
 }
