@@ -1,4 +1,3 @@
-include <bearing.scad>
 include <gears.scad>
 
 distCage = 30;
@@ -13,9 +12,11 @@ zC = 20;
 rG = m * zG / ( 2* PI);
 rC = m * zC / (2 * PI);
 
+$fn = 100;
+
 
 //Soporte
-! union() {
+union() {
     difference(){
         union(){
             difference(){
@@ -25,7 +26,7 @@ rC = m * zC / (2 * PI);
                 cylinder(d=dPol+3,h=20,center=true);
                 
                 translate([rG+rC,0,0]){
-                    cylinder(d=4.5,h=50,$fn=50,center=true);
+                    cylinder(d=4.5,h=50,center=true);
                 }
             }
             
@@ -44,10 +45,10 @@ rC = m * zC / (2 * PI);
     
     translate([0,0,-10]){
         difference(){
-            cylinder(d=dPol+3,h=10,center=true,$fn=20);
-            cylinder(d=8,h=10,center=true,$fn=20);
-            translate([0,0,-3]){
-                cylinder(d=10.2,h=10,center=true,$fn=20);
+            cylinder(d=dPol+3,h=10,center=true);
+            cylinder(d=8,h=10,center=true);
+            translate([0,0,-5]){
+                cylinder(d=10.2,h=10,center=true);
             }
         }
     }
@@ -64,37 +65,39 @@ rC = m * zC / (2 * PI);
     }
 }
 
+
 //Eje
-translate([0,0,10]){
+
+translate([0,0,5]){
     union(){
          difference(){
             union(){
                 
                 //Engranaje
-                translate([0,0,15]){
+                translate([0,0,10]){
                     gear(mm_per_tooth = m, number_of_teeth = zG, thickness = 10);
                 }
                 //Eje adosado al engranaje
-                cylinder(d = dPol + 3 , h = 20, center = true, $fn=50);
+                cylinder(d = dPol + 3 , h = 10, center = true);
                 
                 
             }
             //Agujero del eje
-            cylinder(d = dPol + 0.5 , h = 50, center = true, $fn=50);
+            cylinder(d = dPol + 0.5 , h = 50, center = true);
                  
         }
         
         //Apoyo de la lámina
         difference(){
-                cylinder(d = dPol + 0.5 , h = 2.5, center = true, $fn=50);
-                cylinder(d = dPol - 1 , h = 2.5, center = true, $fn=50);
+                cylinder(d = dPol + 0.5 , h = 2.5, center = true);
+                cylinder(d = dPol - 1 , h = 2.5, center = true);
         }
     }
 
 
 
     //Engranaje motor
-    translate([rG+rC,0,15]){
+    translate([rG+rC,0,10]){
             difference(){
                         gear(mm_per_tooth = m, number_of_teeth = zC, thickness = 10);
             cylinder(d=4,h=20,$fn=50,center=true);
@@ -102,6 +105,7 @@ translate([0,0,10]){
         
     }
 }
+
 
 //Bearing(outer = dExt, inner = dExt - 4, attempt = 3, gap = 0.2, height = 10, hole = dPol);
 
