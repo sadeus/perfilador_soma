@@ -129,7 +129,9 @@ class Perfilador():
             f.write('"mean": {},'.format(np.mean(np.array(sigma))))
             f.write('"error": {},'.format(np.sqrt(np.var(np.array(sigma)))))
             f.write('"raw": [')
-            for s in sigma:
-                f.write("{},".format(s))
+            for i, s in enumerate(sigma):
+                f.write("{}".format(s))
+                if i < len(sigma) - 1:
+                    f.write(",")
             f.write("]}")
         return sigma

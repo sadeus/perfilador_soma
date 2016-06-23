@@ -22,11 +22,11 @@ def render_plot():
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return send_file("./templates/index.html")
 	
 @app.route("/perfilacion")
-def template_perfilacion():
-    return send_file("templates/perfilacion.html")
+def get_perfilacion():
+    return send_file("sigma.json")
 
 
 @app.route('/plot')
