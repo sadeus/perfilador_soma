@@ -47,8 +47,8 @@ class Perfilador():
 
     def update(self):
         '''Devuelve los datos actualizados del perfilador'''
-        tel = telnet.Telnet(self._ip)
-        s = tel.read_util("END").decode().replace("END","")
+        tel = telnetlib.Telnet(self._ip)
+        s = tel.read_until(b"END").decode().replace("END","")
         tel.close()
         data = pd.read_csv(io.StringIO(s),sep=";",names=["t","V"],
                            dtype={"t": np.float64, "V": np.float64})
@@ -74,7 +74,7 @@ class Perfilador():
         #Devuelvo la frecuencia, como float
         return freq[max_fft][0]
 
-    def process_data(self, data, figfile):
+    def process_data(self, data):
         '''Procesa los datos ingresados, devolviendo el tamaño de los haces, el ajuste de la función error y la ubicación de cada ajuste'''
         T = (data[:,0] - data[:,0].min()) * 1e-6
         V = data[:,1] / data[:,1].max()
@@ -122,16 +122,22 @@ class Perfilador():
                 pass
 
                 #A.append(mod_max(int(i + DeltaT/2)))
-        plt.savefig(figfile, format="png")
+        
         open("sigma.json","w+").close()
-        with open("sigma.json","r+") as f:
-            f.write("{")
-            f.write('"mean": {},'.format(np.mean(np.array(sigma))))
-            f.write('"error": {},'.format(np.sqrt(np.var(np.array(sigma)))))
-            f.write('"raw": [')
-            for i, s in enumerate(sigma):
-                f.write("{}".format(s))
-                if i < len(sigma) - 1:
-                    f.write(",")
-            f.write("]}")
-        return sigma
+        dSigma = {}
+        dSigma["mean"] = np.mean(np.array(sigma))
+        dSigma["error"] = np.sqrt(np.var(np.array(sigma))
+        dSigma["raw"] = sigma
+        
+        return sigma, fig
+        
+    def print_data(self, data, figname):
+        T = (data[:,0] - data[:,0].min()) * 1e-6
+        V = data[:,1] / data[:,1].max()
+    
+        fig = plt.figure(1)
+        plt.plot(T, V,'ro')
+        plt.grid()
+        plt.xlabel("t[s]")
+        plt.ylabel("A[1]")
+        plt.savefig(figname, format="png")

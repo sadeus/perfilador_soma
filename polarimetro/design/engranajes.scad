@@ -2,7 +2,7 @@ include <gears.scad>
 
 
 dPol = 25.4/2;  //Media pulgada de polarizador
-dEje = dPol + 3;
+dEje = dPol + 2.9;
 m = 2;
 zG = 40;
 zC = 20;
@@ -10,12 +10,13 @@ zC = 20;
 rG = m * zG / ( 2* PI);
 rC = m * zC / (2 * PI);
 
-$fn = 100;
+
+$fn = 500;
 
 //Eje
     rotate([0,180,0]){
 
-    translate([0,0,-15])
+    translate([0,0,-15]){
     union(){
          difference(){
             union(){
@@ -34,12 +35,22 @@ $fn = 100;
                  
         }
         
+        
+        //Stop de engranaje. Impide que se salga de lugar hacía adelante
+        translate([0,0,4.5]){
+            difference(){
+                cylinder(r=rG+3, h = 1.5, center=true);
+                cylinder(d = dEje , h = 1.5, center = true);
+            }
+        }
+        
         //Apoyo de la lámina
         difference(){
-                cylinder(d = dPol + 0.5 , h = 2.5, center = true);
-                cylinder(d = dPol - 1 , h = 2.5, center = true);
+                cylinder(d = dPol + 0.5 , h = 2, center = true);
+                cylinder(d = dPol - 1 , h = 2, center = true);
         }
     }
+}
 
 
 

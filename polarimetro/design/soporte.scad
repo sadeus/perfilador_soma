@@ -23,7 +23,9 @@ union() {
                 translate([10,0,0]){
                     cube([50, distCage-dVarillaCage*1.1, 10],center=true);
                 }
-                cylinder(d=dPol+3,h=20,center=true);
+                
+                //Agujero del soporte
+                cylinder(d=dPol+3.1,h=20,center=true);
                 
                 translate([rG+rC,0,0]){
                     cylinder(d=4.5,h=50,center=true);
@@ -43,12 +45,13 @@ union() {
         }
     }
     
+    //Soporte del fotodiodo
     translate([0,0,-10]){
         difference(){
-            cylinder(d=dPol+3,h=10,center=true);
-            cylinder(d=8,h=10,center=true);
+            cylinder(d=dPol+3.3,h=11,center=true);
+            cylinder(d=8,h=12,center=true);
             translate([0,0,-5]){
-                cylinder(d=10.2,h=10,center=true);
+                cylinder(d=10.2,h=12,center=true);
             }
         }
     }
@@ -66,57 +69,5 @@ union() {
 }
 
 
-//Eje
-
-translate([0,0,5]){
-    union(){
-         difference(){
-            union(){
-                
-                //Engranaje
-                translate([0,0,10]){
-                    gear(mm_per_tooth = m, number_of_teeth = zG, thickness = 10);
-                }
-                //Eje adosado al engranaje
-                cylinder(d = dPol + 3 , h = 10, center = true);
-                
-                
-            }
-            //Agujero del eje
-            cylinder(d = dPol + 0.5 , h = 50, center = true);
-                 
-        }
-        
-        //Apoyo de la lámina
-        difference(){
-                cylinder(d = dPol + 0.5 , h = 2.5, center = true);
-                cylinder(d = dPol - 1 , h = 2.5, center = true);
-        }
-    }
-
-
-
-    //Engranaje motor
-    translate([rG+rC,0,10]){
-            difference(){
-                        gear(mm_per_tooth = m, number_of_teeth = zC, thickness = 10);
-            cylinder(d=4,h=20,$fn=50,center=true);
-        }
-        
-    }
-}
-
-
-//Bearing(outer = dExt, inner = dExt - 4, attempt = 3, gap = 0.2, height = 10, hole = dPol);
-
-
-
-//Cage para referencia
-/*for (i = [-45,45,90+45,180+45]){
-    translate(distCage/sqrt(2) * [cos(i),sin(i),0]){
-        cylinder(d = dVarillaCage, h = 50, center = true);
-    }
-        
-}*/
 
 

@@ -1,5 +1,8 @@
-// This #include statement was automatically added by the Particle IDE.
 #include "application.h"
+
+//#define DEBUG //Modo debug
+#define SENSOR 0 //0 => Perfilador, 1 => Polarimetro
+#define SPEED 6000
 
 //Modo semiautomático. No espera la conexión WiFi
 SYSTEM_MODE(MANUAL);
@@ -8,120 +11,97 @@ SYSTEM_MODE(MANUAL);
 TCPServer server = TCPServer(23);
 TCPClient client;
 
-#define numMed 4000
-unsigned int times[numMed];
-unsigned int volts[numMed];
+//Variables para mediciones
+#define N_MED 4000
 
-
-// Define some steppers and the pins the will use
+//Pines del motor paso a paso
 #define STEPPER_DIR_PIN D0
 #define STEPPER_STEP_PIN D1
 
 
-class Perfilador {
-    public:
-        Perfilador() {
-            pinMode(STEPPER_DIR_PIN, OUTPUT);
-            pinMode(STEPPER_STEP_PIN, OUTPUT);
-
-        }
 
 
-        void start(){
-            digitalWrite(STEPPER_DIR_PIN, HIGH);
-            for (int i = 0; i < speed; i+=10){
-                analogWrite(STEPPER_STEP_PIN, 128, i);
-                delay(5);
-            }
-        }
+    
 
-        void measure(){
+class Sensor {
+	public:
+		unsigned int x[N_MED];
+		unsigned int y[N_MED];
+		
+		Sensor() {
+		    pinMode(STEPPER_DIR_PIN, OUTPUT);
+		    pinMode(STEPPER_STEP_PIN, OUTPUT);
+		    
+		    digitalWrite(STEPPER_DIR_PIN, HIGH);
+		    for (int i = 0; i < SPEED; i+=10){
+			analogWrite(STEPPER_STEP_PIN, 128, i);
+			delay(5);
+		    }
+		   
+		    attachInterrupt(STEPPER_STEP_PIN, &Sensor::countStep, this, RISING);
+		}
+		
+		void measure(){
+		    for (int i = 0; i < N_MED; i++){
+			/*#if SENSOR == 0
+			    x[i] = micros();
+			#else SENSOR == 1
+			    x[i] = step;
+			#endif*/
+			x[i] = micros();
+			y[i] = analogRead(A0);
+		    }
+		}
 
-            for (int i = 0; i < numMed; i++){
-                times[i] = micros();
-                volts[i] = analogRead(A0);
-                //delayMicroseconds(10);
-            }
-
-            for (int i = 0; i < numMed; i++){
-                server.print(times[i]);
-                server.print(";");
-                server.println(volts[i]);
-            }
-
-            server.print("END");
-
-        }
-
-    private:
-        int speed = 1000;
-};
-
-
-class Polarimetro {
-    public:
-        Polarimetro() {
-            pinMode(STEPPER_DIR_PIN, OUTPUT);
-            pinMode(STEPPER_STEP_PIN, OUTPUT);
-
-            digitalWrite(STEPPER_DIR_PIN, HIGH);
-            for (int i = 0; i < speed; i+=10){
-                analogWrite(STEPPER_STEP_PIN, 128, i);
-                delay(5);
-            }
-
-
-
-        }
-
-        void measure(){
-            analogRead(A0);
-            delayMicroseconds(20);
-
-        }
-
-    private:
-        int speed = 2000;
-
+	private:
+		volatile long step = 0;
+		void countStep(){
+			if (step == N_MED) {
+        			step = 0;
+    			}
+    			else {
+        			step++;
+    			}
+		}
 
 };
 
-Perfilador perf;
+Sensor sens;  //Construyo el sensor, inicializa el motor
 
-//Polarimetro pol;
 
 void setup() {
     //Clientes
     server.begin();
     Serial.begin(9600);
-
+    
     //ADC speed
     setADCSampleTime(ADC_SampleTime_3Cycles);
-
+    
     //Configuro WiFi
     WiFi.on();
     if (!WiFi.ready()){
-        WiFi.setCredentials("LECfi", "coefilec");
-        IPAddress addr(192,168,0,200);
+        WiFi.setCredentials("chogar", "PEP0mkUP5F");
+        IPAddress addr(192,168,1,100);
         IPAddress netmask(255,255,255,0);
-        IPAddress gateway(192,168,0,1);
-        IPAddress dns(192,168,0,1);
+        IPAddress gateway(192,168,1,1);
+        IPAddress dns(192,168,1,1);
         WiFi.setStaticIP(addr, netmask, gateway, dns);
         WiFi.useStaticIP();
         WiFi.connect();
     }
-    //Perfilador
-    perf.start();
-
-
-
 }
 
 void loop() {
-    //pol.measure();
-    Serial.println(WiFi.localIP());
     if (client.connected()) {
-        perf.measure();
+        sens.measure();
+             
+        for (int i = 0; i < N_MED; i++){
+            client.print(sens.x[i]);
+            client.print(";");
+            client.println(sens.y[i]);
+        }
+        client.print("END");
+        
         client.stop();
     }
     else {
@@ -129,3 +109,4 @@ void loop() {
     }
 
 }
+
