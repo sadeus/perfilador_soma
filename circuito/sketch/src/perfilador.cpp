@@ -2,7 +2,7 @@
 
 //#define DEBUG //Modo debug
 #define SENSOR 0 //0 => Perfilador, 1 => Polarimetro
-#define SPEED 6000
+#define SPEED 2000
 
 //Modo semiautomático. No espera la conexión WiFi
 SYSTEM_MODE(MANUAL);
