@@ -1,9 +1,10 @@
-rHaz = 3;
+rHaz = 4;
 hTotal = 30;
-alturaBase = 10;
+alturaBase = 12     ;
 dTambor = 15;
-dEje = 5;
+dEje = 4;
 
+$fn = 100;
 
 difference(){
     cylinder(d=dTambor,h=hTotal);
@@ -12,5 +13,5 @@ difference(){
         cube([20,20,30]);
     }
     
-    cylinder(d=dEje,h=hTotal, $fn=40);
+    cylinder(d=dEje,h=hTotal);
 }

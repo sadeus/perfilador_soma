@@ -1,5 +1,5 @@
 alturaEje = 50;
-motorSize = [20,20,48]; //Tamaño del motor
+motorSize = [20.2,20.2,48]; //Tamaño del motor
 clearing = 20;
 alturaPerros = 10;
 anchoPerros = 15;
@@ -9,6 +9,7 @@ distFotodiodo = 50;
 diametroPhExt = 16;
 diametroPhInt = 8;
 
+$fn = 100;
 
 
 sizeSoporte = [motorSize[2], motorSize[1], alturaEje + motorSize[0]/2] + [0.5,1,0] * clearing;
@@ -20,10 +21,10 @@ difference(){
             cube(sizeSoporte, center=true);
           
             
-            cylinder(h= alturaEje + motorSize[0], r=3.5, center=true, $fn=50);
+            cylinder(h= alturaEje + motorSize[0], r=3.5, center=true);
             
             translate([0,0,5]){
-                cylinder(h= alturaEje + motorSize[0] - 15, r=6 , center=true, $fn = 50);
+                cylinder(h= alturaEje + motorSize[0] - 15, r=6 , center=true);
             }
             
             
@@ -60,10 +61,10 @@ difference(){
 //Soporte fotodiodo
 
     
- translate([distFotodiodo, (7/2 - sizeSoporte[1]/2), alturaEje]){
+ translate([distFotodiodo, (10/2 - sizeSoporte[1]/2), alturaEje]){
     difference(){
         translate([-distFotodiodo/4 , 0, 0]){
-            cube([distFotodiodo/2 + 20, 7, 20], center = true);
+            cube([distFotodiodo/2 + 20, 10, 20.2], center = true);
         }
 
 
