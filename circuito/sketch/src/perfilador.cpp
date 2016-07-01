@@ -1,7 +1,7 @@
 #include "application.h"
 
 //#define DEBUG //Modo debug
-#define SENSOR 0 //0 => Perfilador, 1 => Polarizador
+#define SENSOR 1 //0 => Perfilador, 1 => Polarizador
 #if SENSOR == 0
 #define SPEED 6000
 #else
@@ -46,23 +46,28 @@ class Sensor {
 		}
 		
 		void measure(){
+		    #if SENSOR == 0
 		    for (int i = 0; i < N_MED; i++){
-			#ifndef SENSOR == 0 
 			    x[i] = micros();
-			#else SENSOR == 1
-			    x[i] = step;
-			#endif*/
 			    y[i] = analogRead(A0);
+			    
 		    }
+		    #else
+		    delay(N_MED/SPEED);
+		    #endif 
 		}
 
 	private:
-		volatile long step = 0;
+		volatile int step = 0;
 		void countStep(){
 			if (step == N_MED) {
         			step = 0;
     			}
     			else {
+				#if SENSOR == 1
+				y[step] = analogRead(A0);
+				x[step] = step;
+				#endif
         			step++;
     			}
 		}
@@ -83,11 +88,11 @@ void setup() {
     //Configuro WiFi
     WiFi.on();
     if (!WiFi.ready()){
-        WiFi.setCredentials("chogar", "PEP0mkUP5F");
-        IPAddress addr(192,168,1,100);
+        WiFi.setCredentials("LECfi", "coefilec");
+        IPAddress addr(192,168,0,100);
         IPAddress netmask(255,255,255,0);
-        IPAddress gateway(192,168,1,1);
-        IPAddress dns(192,168,1,1);
+        IPAddress gateway(192,168,0,1);
+        IPAddress dns(192,168,0,1);
         WiFi.setStaticIP(addr, netmask, gateway, dns);
         WiFi.useStaticIP();
         WiFi.connect();
