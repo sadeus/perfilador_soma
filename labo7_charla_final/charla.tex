@@ -1,0 +1,236 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage[margin=1.3cm]{geometry}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{float}
+
+\title{labo6_7_plan}
+\author{Sebastián Schiavinato}
+\date{July 2015}
+
+\begin{document}
+{\noindent \huge \textbf{Charla de avance Laboratorio 7.}}\\
+{\Large 1er cuatrimestre 2016}\\
+\\
+\noindent \textbf{Estudiante:} Sebastián Schiavianto\\
+\textbf{Director:} Dr. Hernán Edgardo Grecco\\
+\textbf{Codirector:} Dra. Andrea Verónica Bragas\\
+\textbf{Lugar de Trabajo:} Laboratorio de Electrónica Cuántica - Departamento de Física - FCEyN - UBA
+
+
+
+
+\section{Motivación del proyecto}
+
+    \underline{Mucho} es el tiempo desperdiciado en el laboratorio armado y desarmando el setup, alineando cada etapa.
+    
+    Caracterizar haces de fuentes conlleva
+    \begin{itemize}
+    \item Perfil espacial. Divergencia
+    \item Perfil espectral y temporal
+    \item Polarización
+    \end{itemize}
+
+
+
+\section{Concepto del perfilador}
+
+    \begin{itemize}
+        \item Determinar el perfil especial del haz en un plano
+        \item Al desplazarse permite determina la divergencia del haz.
+        \item Perfiladores con cámaras CCD. Sensores muy caros
+        \item Perfiladores integradores. Complejidad mecánica
+    \end{itemize}
+
+
+    Para haces gaussianos (\underline{la mayoría}), el perfil de intensidades, es decir la integral del perfil, es la función error
+ 
+\section{Proyecto en Laboratorio 6}
+
+        Resumen de especificaciones del perfilador construido
+        \begin{itemize}
+            \item Permite perfilar haces hasta 10$\,$cm de diametro 
+            \item Utiliza un fotodiodo de amplio espectro, que permite medir haces grandes.
+            \item Adaptado para los diferentes setups del laboratorio.
+            \item Actualizar un perfil por segundo, debido a problemas mecánicos y de transmisión. No puede ser en tiempo real
+            \item Diferencias en cada transición del perfilador. Produce un error del 50\%.
+        \end{itemize}
+
+    \subsubsection{Piezas mecánicas del perfilador}
+
+                \begin{itemize}
+                \item Diseño autoportante.
+                \item Tambor de perfilación permite medir en sistema Cage de Thorlabs. Permite medir divergencias importantes
+                \item Tambor impreso en 3D.
+                \item Motor paso a paso NEMA 17. 200 pasos por vuelta. Máximo 15rps. 
+                \end{itemize}
+
+ 
+
+    \subsubsection{Electrónica de adquisición}
+
+
+                \begin{itemize}
+                    \item uC Teensy v3.2. CPU 96MHz, y 64KiB RAM. ADC 1Msps max.
+                    \item Pololu A4988. Motores hasta 1.5A por fase
+                    \item Máxima adquisición de 24 perfiles por segundo, limitación del motor/uC/Software. 
+                    \item Buffer de puerto serie de 1200 datos, se ajusta la medición
+                    \item Software de ajuste en continuo cambio. Hecho en Python
+                \end{itemize}
+
+
+    \subsubsection{Mediciones de calibración}
+
+               \begin{itemize}
+                    \item Medición a salida de colimador F220FC.
+                    \item Diferencia apreciable de tamaño de haz entre transiciones. De origen mecánico
+                    \item Fotodiodo saturado al usar resistencia de carga enorme (para amplificar).
+                \end{itemize}
+     
+               
+
+\section{Objetivos de Laboratorio 7}
+
+    \begin{itemize}
+     \item Continuar el diseño del perfilador, adaptarlo a los diferentes setups del laboratorio y mejorarlo
+     \item Construir un polarímetro con tecnología ya desarrollada para el perfilador
+     \item Diseñar y construir un espectrómetro portátil a partir del IC Hamamatsu C12666MA
+     \end{itemize}
+
+
+
+\section{Mejoras de Labo 7}
+
+    \subsection{Mejoras al diseño mecánico}
+
+        \begin{itemize}
+            \item Soporte adosable a la mesa óptica por perros. Facil colocación
+            \item Motor encastrado en soporte. No hay artefactos mecánicos
+            \item Tambor de metal con superficie no reflectante
+            \item No permite medir fácilmente en el otro eje. Habrá otra iteración
+        \end{itemize}
+
+
+    \subsection{Mejoras a la electrónica de adquisición}
+
+        \begin{itemize}
+        \item Considerado un amplificador de corriente. Se mide con amplificador de corriente Standford SR750 y se observa mejoras substanciales
+        \item Implementado amplificador de transimpedancia con fotodiodo no polarizado. 
+        \item Mejor respuesta en frecuencia y no satura el fotodiodo
+        \end{itemize}
+
+ 
+
+
+
+\subsection{Calibración de amplificador}
+
+        \begin{itemize}
+        \item Amplificador con LM358. Con fuente simple
+        \item Respuesta al escalón de 0,4V$\,\mu$s$^{-1}$. 4 veces más grande de la necesaria
+        \item Rango lineal bastnate amplio, pero no acusa corriente nula. Se puede buscar otro amplificador. Suficiente para la amplicación
+        \end{itemize}
+
+
+
+    \subsection{Generación de sensores portátiles}
+
+        Spark Photon
+        \begin{itemize}
+        \item ARM Cortex M3 120MHz con stack WiFi. \\Internet of the Things
+        \item 128KiB RAM y 1MiB FLASH
+        \item Programación en la nube, permite actualizaciones OTA.
+        \item API de programación más poderosa. C++ por defecto
+        \end{itemize}
+  
+     
+
+    \subsubsection{Resultados con este uC}
+        \begin{itemize}
+            \item Se pudo mover el motor hasta 27,5RPS. \\PWM mejor implementado
+            \item Conexión TCP permite mandar hasta de 2000 datos. Depende de la red WiFi
+            \item Adquisición de datos cada 10$\mu$s o 100ksps. Más de lo necesario
+        \end{itemize}
+
+\subsection{Software de adquisición}
+
+    \begin{itemize}
+    \item Programa efectuado enteramente Python.
+    \item Código libre para ser adaptado
+    \item Interfaz web, es portable y fácil de instalar
+    \item Permite obtener los datos crudos para hacer otros análisis.
+    \item Algoritmo de ajuste basado en técnicas de reconocimiento de imágenes
+    \end{itemize}
+
+
+\section{Mediciones}
+
+    \subsection{Datos crudos del perfilador}
+    Del perfilador se obtiene los siguientes datos crudos.
+Función error ajustada para tener diferencia de colores
+
+
+
+    El perfilador tiene un error del 5\%.\\ No hay diferencias apreciables entre transiciones
+
+
+    \subsection{Salida de colimador F280FC}
+        \begin{itemize}
+            \item Inicio del riel: $\sigma = (3,03 \pm 0,15)\,\text{mm}$
+            \item Fin del riel:\\ $\sigma = (3,02 \pm 0,18)\,\text{mm}$
+        \end{itemize}
+        Colimador \underline{efectivamente colima el haz}
+
+    \subsection{Lightsheet del SPIM}
+        Medición a \\d$\approx$80$\,$mm del fin del telescopio
+        $\sigma_1 = (0,55 \pm 0,02)\,\text{mm}$\\
+        $\sigma_2 = (2,11 \pm 0,05)\,\text{mm}$\\
+        
+        Las transiciones acusan una \underline{divergencia} apreciable.
+        
+        \[w(z) = w_0 \left[1 + \left(\frac{\lambda (z - z_0)}{\pi 
+        w_0^2}\right)^2\right]^{1/2}\]
+
+    \subsection{Resultados}
+        Para $\lambda =  623\text{nm}$\\
+        \begin{itemize}
+            \item $w_0 = (251 \pm 20)\text{mm}$
+            \item $z_0 = (26,5 \pm 0,3)\text{mm}$
+        \end{itemize}
+        Compatibles con mediciones previas 
+    
+
+    \subsection{Conclusiones de esta medición}
+            \begin{itemize}
+                \item Se pudo caracterizar el haz dentro del SPIM en todo el trazado
+                \item El perfilador fue capaz de medir la divergencia \underline{con solo un set de mediciones}.
+                \item El tamaño de la cintura del haz es importante para el microscopio, y tenemos una medición directa fácil de efectuar
+            \end{itemize}
+    
+    
+\section{Para continuar: polarímetro}
+    Para medir polarización, se considera el siguiente concepto
+    
+    \begin{itemize}
+        \item Permite determinar eje mayor y eje menor de polarización eliptica. 
+        \item Permite identificar polarización circular.
+        \item Con un sistema de engranajes y con microstepping se puede tener una precisión importante. Con los motores usados, minimo 1.8$^\circ$.
+    \end{itemize}
+
+
+
+\section{Proyecto SOMA (Sistema de OptoMecánica Abierta)}
+
+    \begin{itemize}
+        \item Plataforma abierta de instrumental opto-mecánico
+        \item Diseño con énfasis en la reproducibilidad, con tecnología de impresora 3D o mecanizado automático.
+        \item Electrónica libre, controlada por software creado con tecnologías libres.
+    \end{itemize}
+
+    Página del proyecto: \url{http://lec.df.uba.ar/soma}
+
+
+\end{document}
