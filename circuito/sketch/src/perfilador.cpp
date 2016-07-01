@@ -1,8 +1,12 @@
 #include "application.h"
 
 //#define DEBUG //Modo debug
-#define SENSOR 0 //0 => Perfilador, 1 => Polarimetro
+#define SENSOR 0 //0 => Perfilador, 1 => Polarizador
+#if SENSOR == 0
+#define SPEED 6000
+#else
 #define SPEED 2000
+#endif
 
 //Modo semiautomático. No espera la conexión WiFi
 SYSTEM_MODE(MANUAL);
@@ -43,13 +47,12 @@ class Sensor {
 		
 		void measure(){
 		    for (int i = 0; i < N_MED; i++){
-			/*#if SENSOR == 0
+			#ifndef SENSOR == 0 
 			    x[i] = micros();
 			#else SENSOR == 1
 			    x[i] = step;
 			#endif*/
-			x[i] = micros();
-			y[i] = analogRead(A0);
+			    y[i] = analogRead(A0);
 		    }
 		}
 
