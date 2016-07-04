@@ -6,7 +6,8 @@ from scipy import optimize, special
 plt.rcParams["errorbar.capsize"] = 3
 plt.rcParams["lines.linewidth"] = 3
 plt.rcParams["lines.markersize"] = 10
-plt.rcParams["figure.figsize"] = (10*(1+np.sqrt(5))/2,10)
+plt.rcParams["figure.figsize"] = (6*(1+np.sqrt(5))/2,6)
+plt.rcParams["figure.dpi"] = 200
 plt.rcParams["xtick.labelsize"] = 20
 plt.rcParams["ytick.labelsize"] = 20
 plt.rcParams["font.size"] = 30

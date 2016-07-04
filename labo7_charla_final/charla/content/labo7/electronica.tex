@@ -1,0 +1,28 @@
+
+Como se mencionó recién, al ajustar la señal del perfilador con la función error se observa un desajuste importante en la zona cercana a la desobturación. Para poder clasificar este problema se midió la corriente en inversa del fotodiodo con un amplificador de corriente Standford SR750, y se encontró que este error desaparecía. 
+
+De esta forma se pasa a agregarle un amplificador de transimpedancia, que amplifica corriente en tensión. Este amplificador mejora el ajuste, pero a su vez aumenta el ruido de la señal. La calibración del amplificador, construido con un LM358 con fuente simple, fue hecha con una señal escalón (para la respuesta en frecuencia) y con una señal rampa (para determinar el rango lineal). 
+
+La respuesta en frecuencia acusa un skew rate de 0,4V$\,\mu$s$^{-1}$, que es 4 veces más grande de la necesaria, pero la respueta lineal es suficiente amplio para la aplicación, aunque se demuestra que no se puede acusar corriente nula (aunque el ruido térmico o la señal de fondo luminica generará corriente necesaria para que esto no genere inconvenientes)
+   
+  
+\subsubsection{Generación de sensores portátiles}
+    Además del amplificador se cambió el microcontrolador utilizado. El uC de la electronica de adquisición se denomina Photon (de Particle.io), que tiene las siguiente propiedades
+    \begin{itemize}
+        \item ARM Cortex M3 120MHz, 128KiB RAM y 1MiB FLASH. Con stack WiFi
+        \item Programación en la nube, permite programar muchos integrados al mismo tiempo
+        \item API de programación más poderosa. C++ por defecto
+    \end{itemize}
+    
+    El software de adquisición, mientras, fue hecho en Python con una interfaz de usuario gráfica, con miras de ser portable y de fácil utilización. El software tiene un algoritmo propio para generar el ajuste en el perfilador y obtener información del perfil.
+    
+\subsubsection{Resultados con este uC/Software}
+    Con este microcontrolador y con el software se solventó la mayoría de los problemas del sistema anterior, como ser
+    \begin{itemize}
+        \item Se pudo mover el motor hasta 30RPS, más de la velocidad de tiempo real.
+        \item Adquisición de datos (del uC) cada 10$\mu$s o 100ksps. Más de lo necesario
+        \item Conexión TCP ya resuelta. Entre peticiones, se tarda 0,1s en obtener 4000 datos, que corresponden a 20 vueltas. La velocidad de adquisición la determina el motor ahora mismo 
+\end{itemize}
+
+
+

@@ -1,0 +1,67 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usetheme[pageofpages=de,% String used between the current page and the
+                         % total page count.
+          bullet=circle,% Use circles instead of squares for bullets.
+          titleline=true,% Show a line below the frame title.
+          alternativetitlepage=true,% Use the fancy title page.
+          titlepagelogo=fig/logo,% Logo for the first page.
+          %watermark=fig/watermark,% Watermark used in every page.
+          %watermarkheight=80px,% Height of the watermark.
+          %watermarkheightmult=4,% The watermark image is 4 times bigger
+          ]{Torino}
+          
+\usecolortheme{freewilly}
+%\usecolortheme{nouvelle}
+
+\author{Estudiante: {\footnotesize Sebastián Schiavinato} \\ Director: {\footnotesize Dr. Hernán E. Grecco} \\ Codirectora: {\footnotesize Dr. Andrea V. Bragas}}
+\title{Determinación de características ópticas del SPIM para la medición de anisotropía de muestras biológicas}
+\institute{Laboratorio 6 y 7, DF, FCEyN, UBA}
+\date{Julio 5, 2016}
+
+\begin{document}
+
+    \begin{frame}[plain]
+        \titlepage
+    \end{frame}
+    \section{Motivaciones y conceptos}
+        \include{./content/motivaciones}
+        \include{./content/conceptos}
+    \section{Laboratorio 6}
+        \include{./content/labo6}
+    \section{Laboratorio 7}
+        \subsection{Perfilador}
+            \include{./content/labo7/perfilador}
+        \subsection{Polarímetro}
+            \include{./content/labo7/polarimetro}
+        \subsection{Electrónica de adquisición}
+            \include{./content/labo7/electronica}
+    \section{Mediciones}
+        \include{./content/mediciones}
+    \section{Conclusiones}
+        \include{./content/conclusiones}
+        
+    \section{Proyecto SOMA}
+        \begin{frame}{Proyecto SOMA (Sistema de OptoMecánica Abierta)}
+            \centering
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.4\textwidth]{fig/proyecto_soma}
+                \label{fig:soma}
+            \end{figure}
+            \begin{itemize}
+                \item Plataforma abierta de instrumental opto-mecánico
+                \item Diseño con énfasis en la reproducibilidad, con tecnología de impresora 3D o mecanizado automático.
+                \item Electrónica libre, controlada por software creado con tecnologías libres.
+            \end{itemize}
+            Página del proyecto: \url{http://lec.df.uba.ar/soma}
+        \end{frame}
+
+        \begin{frame}[plain]{}
+            \centering
+            \Huge
+            Gracias
+        \end{frame}
+\end{document}
+
