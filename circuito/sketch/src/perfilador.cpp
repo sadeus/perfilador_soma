@@ -23,8 +23,6 @@ TCPClient client;
 #define STEPPER_STEP_PIN D1
 
 
-
-
     
 
 class Sensor {
@@ -38,36 +36,29 @@ class Sensor {
 		    
 		    digitalWrite(STEPPER_DIR_PIN, HIGH);
 		    for (int i = 0; i < SPEED; i+=10){
-			analogWrite(STEPPER_STEP_PIN, 128, i);
-			delay(5);
+			    analogWrite(STEPPER_STEP_PIN, 128, i);
+			    delay(5);
 		    }
 		   
+		}
+        
+        void measure() {
 		    attachInterrupt(STEPPER_STEP_PIN, &Sensor::countStep, this, RISING);
-		}
-		
-		void measure(){
-		    #if SENSOR == 0
-		    for (int i = 0; i < N_MED; i++){
-			    x[i] = micros();
-			    y[i] = analogRead(A0);
-			    
-		    }
-		    #else
-		    delay(N_MED/SPEED);
-		    #endif 
-		}
+            delay(N_MED/SPEED);
+        }
 
 	private:
 		volatile int step = 0;
 		void countStep(){
 			if (step == N_MED) {
+                    pinResetFast(D7);
         			step = 0;
+                    detachInterrupt(STEPPER_STEP_PIN);
     			}
     			else {
-				#if SENSOR == 1
-				y[step] = analogRead(A0);
-				x[step] = step;
-				#endif
+                    pinSetFast(D7);
+                    x[step] = step;
+                    y[step] = analogRead(A0);
         			step++;
     			}
 		}

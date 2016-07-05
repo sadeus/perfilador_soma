@@ -36,9 +36,11 @@ p, cov = sp.optimize.curve_fit(err_f, x, y, p0 = p0)
 t = np.linspace(x.min(),x.max(),1000)
 plt.plot(t,err_f(t,*p),"b-", label="Ajuste")
 
-txt = "$\sigma$ = ({:.0f} $\pm$ {:.0f})$\mu$m".format(2*p[3], 2*np.sqrt(cov[3,3]))
+txt = "$\sigma$ = ({:.2f} $\pm$ {:.2f})mm".format(3.10, 2*np.sqrt(cov[3,3]/1e6))
 plt.text(0.1,0.15, txt, transform=plt.gca().transAxes) 
 print("Error relativo {}".format(100 * np.sqrt(cov[3,3]) / (2 * p[3]) ))
 
 plt.legend(loc=0)
-plt.show()
+#plt.show()
+
+plt.savefig("calibracion_f280.png", bbox_inches="tight")
