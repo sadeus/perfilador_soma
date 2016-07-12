@@ -2,9 +2,9 @@ include <gears.scad>
 
 
 dPol = 25.4/2;  //Media pulgada de polarizador
-dEje = dPol + 2.9;
+dEje = 16;
 m = 2;
-zG = 40;
+zG = 35;
 zC = 20;
 
 rG = m * zG / ( 2* PI);
@@ -12,9 +12,9 @@ rC = m * zC / (2 * PI);
 
 
 $fn = 500;
-
+module engranajes(){
 //Eje
-    rotate([0,180,0]){
+
 
     translate([0,0,-15]){
     union(){
@@ -39,7 +39,7 @@ $fn = 500;
         //Stop de engranaje. Impide que se salga de lugar hacía adelante
         translate([0,0,4.5]){
             difference(){
-                cylinder(r=rG+3, h = 1.5, center=true);
+                cylinder(r=rG+2, h = 1.5, center=true);
                 cylinder(d = dEje , h = 1.5, center = true);
             }
         }
@@ -55,16 +55,17 @@ $fn = 500;
 
 
     //Engranaje motor
-    translate([25,0,-5]){
+    
+        translate([rC+rG,0,-5]){
+            rotate([0,0, m * zG*180/PI]){
+                difference(){
+                    gear(mm_per_tooth = m, number_of_teeth = zC, thickness = 10);
+                    cylinder(d=4,h=20,$fn=50,center=true);
+                }
             
-        difference(){
-            gear(mm_per_tooth = m, number_of_teeth = zC, thickness = 10);
-            cylinder(d=4,h=20,$fn=50,center=true);
+            }
         }
-        
-    }
 }
-
 
 
 
