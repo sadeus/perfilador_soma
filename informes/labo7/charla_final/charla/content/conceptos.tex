@@ -1,0 +1,18 @@
+
+\subsection{Concepto del perfilador}
+
+Un perfilador de haz es un instrumento dedicado a medir el perfil espacial de un haz. El concepto más simplificado de perfilado es el observado en a figura, que al cortar con el filo el haz se puede obtener la intensidad restante. Estos perfiladores se denominan integradores, ya que la señal medida es la integral del perfil. 
+
+Por otro lado se puede medir con una cámara, pero este sensor debe tener suficiente rango dinámico y resolución espacial, lo que encarese el precio. Mientras los sensores integradores conllevan una complejidad mecánica, pero se pueden usar sensores más baratos (como son los fotodiodos).
+
+El diseño que se encaró en este trabajo consiste en un perfilador integrador y se resolvió la mecánica de la medición. Por lo tanto, si se mide un haz gaussiano, como corresponde a la gran mayoría de los laseres comerciales, el perfil de intensidades, es decir la integral del perfil, es la función error
+
+
+\subsection{Concepto del polarimetro}
+
+El otro instrumental encarado corresponde a un polarimetro, es decir un instrumento capaz de medir la polarización del haz. Es de interes poder determinar el tipo de polarización y además, de prioridad menor, los ángulos de polarización, por lo que se encaró el siguiente concepto.
+
+Este polarimetro, al rotar la lámina polarizadora, permite rápidamente determinar si la polarización es circular o lineal; si la polarización es circular la intensidad es constante, y si la polarización es lineal se observaría la ley de Malus (de coseno cuadrado). Sin embargo, si la señal fuese eliptica, podría observarse un coseno cuadrado con un offset. Para eso se considera medir la diferencia entre máximo y el minimo de la señal, dividio por la suma del máximo y el mínimo; esta magnitud representa la polarización y debe ser cercana a 1 si el sistema está linealmente polarizado, o 0 si está circularmente polarizada.
+
+La precisión al determinar el ángulo de polarización viene determinada 100\% por la precisión de movimiento del motor, para el cual es natural utilizar motores paso a paso o servomotores.
+

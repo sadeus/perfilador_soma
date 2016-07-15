@@ -1,0 +1,223 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[font=footnotesize,labelfont=bf]{caption}
+\usepackage[hmargin=1cm,vmargin=2cm]{geometry}
+\usepackage{amsmath}
+\usepackage{authblk}
+\usepackage{url}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{sectsty}
+\usepackage{fancyhdr}
+\usepackage{booktabs} %Agrego líneas a las tablas
+
+\renewcommand{\baselinestretch}{1.5}
+\renewcommand\spanishtablename{Tabla}
+
+%Estilo
+\sectionfont{\large}
+%\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\newcommand{\comment}[1]{} %Para hacer comentarios
+
+
+\begin{document}
+
+    \begin{titlepage}
+        
+        \begin{center}
+        {\scshape\Huge Determinación de características ópticas del SPIM para mediciones de anisotropía de muestras biológicas \par}
+        \vspace{1cm}
+        {\Large Sebastián Schiavinato \par}
+        \vfill
+
+        \includegraphics[width=0.5\textwidth]{fig/logo}
+        
+        \vfill
+        \Large Laboratorio 6 y 7 \\
+        \large 15 de julio de 2016
+        \end{center}
+        
+        \newpage
+        \pagestyle{empty}
+        \begin{center}
+        \large
+        \noindent \underline{Alumno}: Sebastián Schiavinato (seba.schiavinato@gmail.com) \\
+        \underline{Director}:   Dr. Hernán E. Grecco (hgrecco@df.uba.ar)\\
+        \underline{Codirectora}: Dra. Andrea V. Bragas (bragas@df.uba.ar)\\
+        \vspace{1em}
+        \underline{Lugar de trabajo}\\ Laboratorio de electrónica Cuántica, DF, FCEyN, UBA.
+        \end{center}
+        \vspace{5em}
+        \begin{minipage}{.3\textwidth}
+            \begin{flushleft}
+            \centering
+            \hrulefill\\
+            Dr. Hernán E. Grecco 
+            \end{flushleft}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{.3\textwidth}
+            \begin{center}
+            \hrulefill\\
+            Dra. Andrea V. Bragas
+            \end{center}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{.3\textwidth}
+            \begin{flushright}
+            \centering
+            \hrulefill\\
+            Sebastián Schiavinato
+            \end{flushright}
+        \end{minipage}
+    \end{titlepage}
+
+
+    \tableofcontents
+    \clearpage
+    \begin{abstract}
+        En el Laboratorio de Electrónica Cuántica se busca construir instrumentales ópticos capaces de observar procesos biológicos y de nanoplasmónica. Uno de estos instrumentos construidos en el Laboratorio se denomina SPIM (del inglés \textit{Selective/Single Plane Illumination Microscope}), que es capaz cuantificar procesos celulares tridimensionales.  
+        
+        Para construir este instrumental, como un ejemplo específico de trabajo, se requiere definir las propiedades ópticas de los haces antes y después de cada etapa, y adaptar cada etapa para un objetivo final. Este proceso tiende a ser de naturaleza iterativa, adaptando los diferentes dispositivos hasta llegar al objetivo del instrumental.
+
+        Con el objetivo de mejorar este proceso en este trabajo se trató de construir instrumental portátil capaz de cuantificar las propiedades ópticas del SPIM.
+
+        En este instrumental es necesario saber el tamaño del haz a la entrada para optimizar la resolución al medir la muestra, por lo que se construyó y diseñó un perfilador con mecanismo de perfilación automático de pequeñas dimensiones para ser fácil de colocar, si desarmar el setup óptico. Este perfilador deja obsoleta la medición manual, ya que se logró mejoras substanciales en tiempo de adquisición con la misma precisión que el método manual.
+        
+        Otros de los objetivos del SPIM es hacer mediciones de anisotropía de polarización, por lo que se construyó un polarímetro para poder cuantificar la polarización del haz dentro del SPIM. 
+        
+        El polarímetro permitió determinar que el haz dentro del SPIM tiene una polarización definida, descartando la polarización aleatoria. Esto permite que las mediciones de anisotropía puedan ser efectuadas sin cambiar el microscopio, agregando láminas retardadoras.
+
+
+    \end{abstract}
+    \clearpage
+    \section{Introducción}
+        \input{./intro}
+    %\section{Objetivos}
+    \section{Desarrollo experimental}
+        \input{./exp}
+
+    \section{Resultados}
+        \input{./result}
+    \section{Conclusiones}
+        Respecto al perfilador, con el prototipo final se logró mediciones con el mismo error cometido, un 5\%, que el sistema manual, además se observó correlación entre las mediciones. 
+
+        La velocidad de adquisición, determinada por la velocidad del motor y la velocidad de transferencia de datos, permite observar el perfil en tiempo real, es decir unas 24 veces por segundo. De esta forma es posible alinear y observar cambios del tamaño del haz al mismo tiempo, mejorando el proceso.
+
+        Además de mejorar la velocidad de adquisición de un perfil de haz, este instrumental permite medir sin desarmar el setup del SPIM, lo que permitiría ser utilizado fácilmente en cualquier experiencia del laboratorio y eventualmente adaptarlo para otras aplicaciones.
+
+        La tecnología desarrollada para el perfilador permitió rápidamente readaptarla para la creación de un polarímetro, también portátil, con el objetivo de observar la polarización del haz en el microscopio SPIM.
+        
+        Dado el material polarizante a usar, se pasó a calibrarlo. Esta calibración determinó que una lámina del material distan de ser un polarizador perfecto, al tener transferencia en el eje perpendicular al eje principal. Sin embargo, no es necesario para descartar cambios en la polarización en el tiempo o polarización aleatoria. Estas láminas no permiten diferenciar un haz linealmente polarizado a uno elipticamente polarizado. 
+
+        Con las láminas calibradas se hicieron mediciones de la polaización antes y después de la fibra del SPIM, para varios laseres. Se observó que la polarización no cambió en los 2s de medición, lo que es un fuerte indicador de la constancia de dicha. Además la polarización de los laseres azul y verde se mantuvo al atravezar la fibra, pero no se observó el mismo resultado para el laser rojo. Es conveniente repetir estas mediciones con un polarizador más cercano al ideal.
+    %\section{Agradecimientos}
+    %\begin{itemize}
+    %    \item A mi director Hernan Grecco
+    %    \item Juan Bujjamer
+    %    \item Bruno Moretti
+    %    \item A la comunidad del LEC
+    %    \item Martin Labate, por ayudarme a imprimir las piezas
+    %\end{itemize}
+
+    \begin{thebibliography}{3}
+        \bibitem{huisken2004}
+        J. Huisken, J. Swoger, F. Del Bene, J. Wittbrodt, E. H. K. Stelzer, ''Optical Sectioning Deep Inside Live Embryos by Selective Plane Illumination Microscopy'', \emph{Science} 13 August 2004, Vol. 305 no. 5686 pp. 1007-1009.
+        \bibitem{svelto}
+            O. Svelto, Principles of Lasers, 2010, Springer-Verlag
+        \bibitem{goldstein_collett}
+            D. Goldstein and E. Collett, Polarized Light, 2nd ed., CRC Press (2003)
+        \bibitem{thorlabs_profiler} 
+            Dual Scanning Slit Beam Profiler, {\footnotesize \url{https://www.thorlabs.com/thorproduct.cfm?partnumber=BP209-VIS}}
+        \bibitem{soma}
+            Proyecto SOMA, \url{http://lec.df.uba.ar/soma}
+        \bibitem{thorlabs_cage}
+            Cage Systems Ø1'', \url{https://www.thorlabs.com/navigation.cfm?guide_id=2002}
+       \bibitem{42BYGHW609}
+            42BYGHW609 Stepper Motor, \url{https://goo.gl/AbBvMW}
+        \bibitem{8H2A28402}
+            Nema 8, 8H2A, Miniature Stepper Motors -20mm(1.8 degree), \url{http://goo.gl/qSGui9}
+        \bibitem{arduino}
+            Arduino Development Platform, \url{http://www.arduino.cc}
+        \bibitem{teensy}
+            Teensy Development Board,  \url{https://www.pjrc.com/teensy/teensy31.html}
+        \bibitem{particle_photon}
+            Particle Photon Development Board, \url{https://docs.particle.io/guide/getting-started/intro/photon/}
+        \bibitem{pololu}
+            Pololu A4988 Stepper Motor Driver Carrier,  \url{https://www.pololu.com/product/1182}
+        \bibitem{fds010} 
+         Thorlabs FDS010 photodiode \url{https://www.thorlabs.com/thorcat/0600/FDS010-SpecSheet.pdf}
+        \bibitem{thorlabs_fc}
+            Fixed Focus Collimation Packages: FC/PC Connectors, \\ \url{https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=944}
+    \end{thebibliography}
+
+    \clearpage
+    \appendix
+    \section{Diseños mecánicos del perfilador}
+    \subsection{Tambor del perfilador}
+    \vfill
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/perfilador/tambor_mecanico}
+    \caption{Dibujo mecánico del tambor. No está a escala}
+    \label{fig:perfilador/tambor_plano}
+    \end{figure}
+    \vfill
+
+    \clearpage
+    \subsection{Soporte}
+    \vfill
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/perfilador/soporte_v4_mecanico}
+    \caption{Dibujo mecánico del soporte del perfilador. No está a escala}
+    \label{fig:perfilador/soporte_plano}
+    \end{figure}
+    \vfill
+
+    \clearpage
+    \section{Diseños mecánicos del polarimetro}
+    \subsection{Soporte}
+    \vfill
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/polarimetro/soporte_mecanico}
+    \caption{Dibujo mecánico del soporte del polarimetro. No está a escala}
+    \label{fig:polarimetro/soporte_plano}
+    \end{figure}
+    \vfill
+
+    \subsection{Engranajes}
+    \vfill
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/polarimetro/engranajes_mecanico}
+    \caption{Dibujo mecánico de los engranajes. No está a escala}
+    \label{fig:polarimetro/engranajes_plano}
+    \end{figure}
+    \vfill
+
+
+    \clearpage
+    \section{Diseños de la electrónica}
+    \vfill
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=15cm]{fig/circuito/circuito_esquematico}
+    \caption{Esquematico del circuito eléctronico de adquisición.}
+    \label{fig:circuito/esquematico}
+    \end{figure}
+    \vfill
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=10cm]{fig/circuito/circuito_pcb}
+    \caption{Circuito impreso de adquisición. Escala 2:1}
+    \label{fig:circuito/pcb}
+    \end{figure}
+    \vfill
+\end{document}
