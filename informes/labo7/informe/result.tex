@@ -1,18 +1,18 @@
-Implementado los diseños, para probar el perfilador se utilizó el haz de un láser HeNe a la salida de una fibra óptica con colimador Thorlabs F220FC-A
+Implementado los diseños, el perfilador se utilizó para medir el haz en el SPIM, como prototipo de cualquier setup del laboratorio.
 
 \subsection{Mediciones preliminares con el perfilador}
-Los primeros prototipos del perfiladori, en el marco de Laboratorio 6, se utilizaron para medir el haz de un laser HeNe a la salida de una fibra óptica Thorlabs F220FC-A\cite{thorlabs_fc}, con un tamaño del haz en plano focal nominal de 2$\,$mm en ambos ejes y una divergencia de 0.020$^\circ$. Se hicieron mediciones manuales de este haz para constrastar y calibrar el perfilador.
+Los primeros prototipos del perfilador, en el marco de Laboratorio 6, se utilizaron para medir el haz de un laser HeNe a la salida de una fibra óptica Thorlabs F220FC-A\cite{thorlabs_fc}, con un tamaño del haz en plano focal nominal de 2$\,$mm en ambos ejes y una divergencia de 0.020$^\circ$. Se hicieron mediciones manuales de este haz para constrastar y calibrar el perfilador.
 
 Los datos medidos están en la figura \ref{fig:perfilador/calibracion_preliminar}, donde el error de la intensidad fue estimado con la variación de la intensidad y el error acusado por el fabricante del instrumental. El error en las abscisas está graficado, pero es despreciable.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.55\textwidth]{fig/perfilador/calibracion_preliminar}
+    \includegraphics[width=0.4\textwidth]{fig/perfilador/calibracion_preliminar}
     \caption{Perfilación del haz utilizado de forma manual, con el ajuste efectuado. El error en la posición está graficado pero es despreciable}
     \label{fig:perfilador/calibracion_preliminar}
 \end{figure}
 
-Podemos ver que esa figura también se agregó el ajuste de la función error. De ese ajuste, el único parámetro que interesa es el ancho medio, que es la mitad del tamaño del haz, ya que la amplitud depende fuertemente del sensor utilizado (y además puede variar, si se usa el fotodiodo, si cambia la resistencia de carga). Tampoco es necesario saber, para las aplicaciones del laboratorio, la intensidad máxima absoluta del haz.
+Podemos ver que esa figura también se agregó el ajuste de la función error. De ese ajuste, el único parámetro que interesa es el ancho medio, que es la mitad del tamaño del haz, ya que la amplitud depende fuertemente del sensor y la amplificación utilizada. Tampoco es necesario saber, para las aplicaciones del laboratorio, la intensidad máxima absoluta del haz.
 
 El ajuste efectuado acusa un valor de tamaño medio de $\sigma = (0,95\pm0,06)\,$mm, y recordemos que del colimador utilizado sale un haz con un tamaño de 2$\,$mm en el plano focal, por lo que el valor acusado por el fabricante parece estar bien tabulado. Este valor de $\sigma$ representa la calibración con la que se contrastará el perfilador.
 
@@ -48,7 +48,7 @@ Se observa diferencias entre las diferentes transiciones, en especial las que se
 Esto lleva a diseñar un tambor metálico, como ya se mencionó, y nuevos diseños del soporte del perfilador.
 
 \subsection{Calibración y mediciones del perfilador}
-Habiendo hecho mediciones con los primeros prototipos en Laboratorio 6, se pasó a medir el perfil, en Laboratorio 7, con el tercer y cuarto prototipo (\ref{fig:perfilador/soporte_v3} y \ref{fig:perfilador/soporte_v4}) con el tambor de metal, esta vez a la salida de una colimador de fibra Thorlabs F280\cite{thorlabs_fc} (con un diametro de haz nominal de 3,3$\,$mm en ambos ejes). 
+Habiendo hecho mediciones con los primeros prototipos en Laboratorio 6, se pasó a medir el perfil, en Laboratorio 7, con el tercer y cuarto prototipo (\ref{fig:perfilador/soporte_v3} y \ref{fig:perfilador/soporte_v4}) con el tambor de metal y una nueva impresión en plástico, esta vez a la salida de una colimador de fibra Thorlabs F280\cite{thorlabs_fc} (con un diametro de haz nominal de 3,3$\,$mm en ambos ejes). 
 
 Las mediciones efectuadas, en este caso en el foco del colimador mencionado, se pueden observar en las figuras \ref{fig:perfilador/spim_foco}, con un acercamiento en \ref{fig:perfilador/spim_foco_zoom}
 
@@ -70,11 +70,11 @@ Las mediciones efectuadas, en este caso en el foco del colimador mencionado, se 
 
 Al promediar cada perfil se obtiene que el haz mide $(3,03\pm0,15)\,$mm. Se observa una diferencia con el valor reportado por el fabricante, de 3,3$\,$mm, que se asocia a un error sistemático en la medición; puede ser por el fotodiodo utilizado, pero no se ha podido diferenciar. 
 
-Para aseverar esta discrepancia, se hicieron mediciones manuales del perfil, que se ven en la figura \ref{fig:perfilador/spim_foco_manual}, donde queda en evidencia una discrepancia, pero con el error los datos se solapan. Resta entender la discrepancia encontrada con el valor nominal expresado por el fabricante, ya que el tamaño del haz a la salida del colimador es un parámetro determinante del tamaño (y por ende de la precisión) del lightsheet del SPIM.
+Para aseverar esta discrepancia, se hicieron mediciones manuales del perfil, que se ven en la figura \ref{fig:perfilador/spim_foco_manual}, donde queda en evidencia una discrepancia, pero las mediciones manuales y automática se solapan. Resta entender la discrepancia encontrada con el valor nominal expresado por el fabricante, ya que el tamaño del haz a la salida del colimador es un parámetro determinante del tamaño (y por ende de la precisión) del lightsheet del SPIM.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{fig/perfilador/calibracion_f280}
+    \includegraphics[width=0.55\textwidth]{fig/perfilador/calibracion_f280}
     \caption{Medición manual del perfil del haz para el colimador F280FC, con el ajuste de la función error}
     \label{fig:perfilador/spim_foco_manual}
 \end{figure}
@@ -121,15 +121,15 @@ Si este conjunto de mediciones lo ingresamos en la ecuación \ref{eq:perfilacion
         \label{tbl:perfilador/spim_telescopio_predicciones}
 \end{table}
 
-Estas predicciones con consistentes con una perfilación con el foco dentro del tambor y con una perfilación con el foco fuera del tambor con el haz convergiendo. Ambas soluciones se explican conociendo el funcionamiento del telescopio para haces gaussianos, por lo que las mediciones  
+Estas predicciones con consistentes con una perfilación con el foco dentro del tambor y con una perfilación con el foco fuera del tambor con el haz convergiendo. Ambas soluciones se explican conociendo el funcionamiento del telescopio para haces gaussianos, por lo que las mediciones verifican la hipotesis de la medición de la divergencia del haz.
 
-Es preciso recordar que esta medición se hizo solo en un punto del espacio, y con ello se pudo observar la divergencia del haz. Si el camino óptico es ordenes de magnitud más grande que el tamaño del tambor, se deben hacer mediciones a varias distancias para poder observar de forma cabal la divergencia. En el caso observado, con una medición más eliminaría la ambigüedad de la medición, o conociendo de forma precisa los planos de perfilación en los datos adquiridos.
+Es preciso recordar que esta medición se hizo solo en un punto del espacio, y con ello se pudo observar la divergencia del haz. Si el camino óptico es ordenes de magnitud más grande que el tamaño del tambor, se deben hacer mediciones a varias distancias para poder observar de forma cabal la divergencia.
 
-\subsection{Mediciones del polarimetro}
+\subsection{Mediciones del polarímetro}
 
-Las mediciones con el polarimetro fueron determinadas por la inicial calibración del material polarizante, en este caso una lámina polarizadora plástica, y luego por mediciones antes y después de la fibra del SPIM. Estas mediciones, como ya mencionamos, buscan determinar si la fibra óptica es capaz de mantener la polarización del haz incidente.
+Las mediciones con el polarímetro fueron determinadas por la inicial calibración del material polarizante, en este caso una lámina polarizadora plástica, y luego por mediciones antes y después de la fibra del SPIM. Estas mediciones, como ya mencionamos, buscan determinar si la fibra óptica es capaz de mantener la polarización del haz incidente.
 
-Para medir correctamente con el polarimetro, se tiene que conocer la matriz de transición de la lámina polarizadora, ya que representa la transmitancia de cada componente. Para esto, se crearon dos polarizadores rotantes con el material del polarizador y se midió la intensidad de un haz polarizado, proveniente de un láser HeNE Melles Griot 05-LGP-193, atravezando un conjunto de estados de alineación. Estas mediciones están condensadas en la tabla \ref{tbl:polarimetro/calibracion}
+Para medir correctamente con el polarímetro, se tiene que conocer la matriz de transición de la lámina polarizadora, ya que representa la transmitancia de cada componente. Para esto, se crearon dos polarizadores rotantes con el material del polarizador y se midió la intensidad de un haz polarizado, proveniente de un láser HeNE Melles Griot 05-LGP-193, atravezando un conjunto de estados de alineación. Estas mediciones están condensadas en la tabla \ref{tbl:polarimetro/calibracion}
 
 
 \begin{table}[H]
@@ -151,9 +151,9 @@ De estas mediciones se deducen que la matriz de transferencia tiene la siguiente
     \begin{pmatrix} 0.461 & 0 \\ 0 & 2,097\times10^{-3} \end{pmatrix}.
 \end{equation}
 
-En esta matriz están condesados algunos detalles del polarizador. La transferencia en el eje principal es de 46,1\%, lo que representa una perdida importante de potencia luminica, y la transferencia en el eje perpendicular no es exactamente cero, lo que implica que un haz polarizado lineal generará una señal coseno cuadrado más un offset. Esta señal puede eliminarse si se conoce la intensidad del haz al llegar al polarizador. 
+En esta matriz están condesados algunos detalles del polarizador. La transferencia en el eje principal es de 46,1\%, lo que representa una perdida importante de potencia lumínica, y la transferencia en el eje perpendicular no es exactamente cero, lo que implica que un haz polarizado lineal generará una señal coseno cuadrado más un offset. Esta señal puede eliminarse si se conoce la intensidad del haz al llegar al polarizador. 
 
-Esta imperfección del polarizador genera problemas solo si se trata de dicernir una polarización lineal de una eliptica, pero las demás polarizaciones quedan bien definidas. De esta forma, se hicieron mediciones con la lámina ya que nos permite separar una polarización aleatoria de una polarización definida.
+Esta imperfección del polarizador genera problemas solo si se trata de dicernir una polarización lineal de una elíptica, pero las demás polarizaciones quedan bien definidas. De esta forma, se pudieron hacer mediciones con esta lámina, ya que se busca minimamente separar una polarización aleatoria de una polarización definida.
 
 Finalmente se midió la polarización antes de la fibra del SPIM, y después del colimador del SPIM, para un láser con $\lambda = 473\,$nm (de color azul) modelo DHOM-M-473-150mW (que corresponde al utilizado usualmente en el SPIM). Las mediciones está condensadas en las figuras \ref{fig:polarimetro/polarizacion_laser} y \ref{fig:polarimetro/polarizacion_fibra}, donde se recortó la medición a 1000 pasos del motor que rotaba a 10RPS, generando una ventana temporan de 0,5s. La cantidad total de datos fueron 4000, lo que son 2s de medición.
 
@@ -177,13 +177,13 @@ Al no poder controlar la intensidad del haz a la entrada de la fibra se debió i
 
 La disposición de filtros neutros se mantuvo constante en todas las mediciones, así no se generaba diferencias de potencias que generen diferencias en el coeficiente $\alpha$. 
 
-Al poder efectuar el ajuste correctamente en el conjunto de datos, en este caso de 4000 puntos, se puede descartar que la polarización cambie el intervalos de tiempo menores a 2s. Este ajuste a su vez descarta la polarización aleatoria, por lo que permitiría al microscopio hacer análisis de anisotropía (intercalando en el riel a la salida del colimador láminas retardadoras).
+Al poder efectuar el ajuste correctamente en el conjunto de datos, en este caso de 4000 puntos, se puede descartar que la polarización cambie el intervalos de tiempo menores a 2s. Este ajuste a su vez descarta la polarización aleatoria, por lo que permitiría al SPIM hacer análisis de anisotropía (intercalando en el riel a la salida del colimador láminas retardadoras).
 
 Para completar el análisis, se calculan los coeficientes $\alpha$, con la formula \ref{eq:polarizacion/alpha}. Si al atravezar la fibra se mantiene el coeficiente se mantiene, la fibra no altera la polarización a menos de una rotación de los ejes. Estos coeficientes se calculan a partir de el ajuste efectuado. 
 
 Antes de la fibra el coeficiente obtiene un valor $\alpha = (0,664\pm 0,025)$ y después de la fibra $\alpha = (0,660\pm0,029)$. Esto determina que la fibra mantiene, dentro del error, la polarización para el laser azul, que es eliptica.
 
-Se hicieron las mismas mediciones para los otros láseres del setup, uno verde ($\lambda = 532$nm) modelo Coherent 315M-100 y un laser rojo helio neón Melles Griot 25-LHP-151-230 (ya usado previamente), y estas mediciones está condensadas en la tabla \ref{tbl:polarimetro/mediciones}
+Se hicieron las mismas mediciones para los otros láseres del setup, uno verde ($\lambda = 532$nm) modelo Coherent 315M-100 y uno rojo HeNe Melles Griot 25-LHP-151-230 (ya usado previamente), y estas mediciones está condensadas en la tabla \ref{tbl:polarimetro/mediciones}
 
 \begin{table}[H]
     \centering
@@ -197,5 +197,5 @@ Se hicieron las mismas mediciones para los otros láseres del setup, uno verde (
     \label{tbl:polarimetro/mediciones}
 \end{table}
 
-Se observa que para el laser verde y azul la polarización se mantiene, dentro del error, pero no es el caso para el laser rojo. No es posible descartar un error propio de la lámina polarizadora, por lo que sería conveniente recurrir a un polarizador más cercano al ideal y repetir estas mediciones.
+Se observa que para el láser verde y azul la polarización se mantiene, dentro del error, pero no es el caso para el láser rojo. No es posible descartar un error propio de la lámina polarizadora, por lo que sería conveniente recurrir a un polarizador más cercano al ideal y repetir estas mediciones.
 

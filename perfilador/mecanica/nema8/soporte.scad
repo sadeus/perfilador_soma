@@ -1,21 +1,27 @@
-alturaEje = 50;
-motorSize = [20.2,20.2, 28.2]; //Tamaño del motor
-clearing = 20;
-alturaPerros = 10;
-anchoPerros = 15;
-
-distFotodiodo = 50;
-
-diametroPhExt = 12;
-diametroPhInt = 8;
-
-$fn = 100;
 
 
 
-sizeSoporte = [40,40,60];
+
 
 module soporte() {
+    
+    sizeSoporte = [40,40,60];
+    
+    alturaEje = 50;
+    
+    //Tamaño del motor
+    motorSize = [20.2,20.2, 28.2];
+
+    alturaPerros = 10;
+    anchoPerros = 15;
+
+    distFotodiodo = 50;
+
+    diametroPhExt = 12;
+    diametroPhInt = 8;
+
+    $fn = 100;
+    
     difference(){
         translate([0,0,sizeSoporte[2] / 2]){
             
@@ -29,8 +35,6 @@ module soporte() {
                 translate([0,0,5]){
                     cylinder(h= alturaEje + motorSize[0] - 15, r=6 , center=true);
                 }
-                
-                
                 
 
                 //Perros
@@ -83,4 +87,4 @@ module soporte() {
         }
     }
 }
-soporte();
+

@@ -1,4 +1,3 @@
-include <gears.scad>
 include <soporte.scad>
 include <engranajes.scad>
 
