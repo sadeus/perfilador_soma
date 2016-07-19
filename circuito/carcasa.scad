@@ -1,4 +1,4 @@
-sizeHueco = [50+23,52,30];
+sizeHueco = [50+25,52,30];
 
 sizeTapa = sizeHueco - [0, 0, sizeHueco[2]] + [5,3,2];
 
@@ -6,7 +6,7 @@ $fn=50;
 
 translate([0,0,sizeHueco[2]/2])
 difference(){
-    cube(sizeHueco + 10 * [1, 1, 0], center=true);
+    cube(sizeHueco + 5 * [1, 1, 0], center=true);
 
     translate([0,0,5]){
         cube(sizeHueco, center=true);
@@ -23,7 +23,7 @@ difference(){
     //BNC fotodiodo
     translate([0,-sizeHueco[1]/2,5]){
         rotate([90,0,0]){
-            cylinder(d=11,h=20,center=true);
+            cylinder(d=8,h=20,center=true);
         }
     }
     
