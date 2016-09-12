@@ -4,11 +4,7 @@ import random
 from matplotlib.backends import qt_compat
 
 #Importo o PyQT o PySide
-use_pyside = qt_compat.QT_API == qt_compat.QT_API_PYSIDE
-if use_pyside:
-    from PySide import QtGui, QtCore
-else:
-    from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui, QtCore
 
 
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg
