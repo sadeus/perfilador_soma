@@ -4,6 +4,7 @@ sizeTapa = sizeHueco - [0, 0, sizeHueco[2]] + [5,2,2];
 
 $fn=50;
 
+<<<<<<< HEAD
 translate([0,0,sizeHueco[2]/2]){
     difference(){
         
