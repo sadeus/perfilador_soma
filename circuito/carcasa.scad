@@ -1,51 +1,71 @@
-sizeHueco = [50+23,52,30];
+sizeHueco = [90, 90 , 30];
 
-sizeTapa = sizeHueco - [0, 0, sizeHueco[2]] + [5,3,2];
+sizeTapa = sizeHueco - [0, 0, sizeHueco[2]] + [5,2,2];
 
 $fn=50;
 
-translate([0,0,sizeHueco[2]/2])
-difference(){
-    cube(sizeHueco + 10 * [1, 1, 0], center=true);
-
-    translate([0,0,5]){
-        cube(sizeHueco, center=true);
-    }
-    
-     /*for (i = [-45, 45, 90+45,180 + 45]){
-        pos = [(sizeHueco[0] + 10)/sqrt(2) * cos(i), (sizeHueco[1] + 10)/sqrt(2) * sin(i), 10];
+translate([0,0,sizeHueco[2]/2]){
+    difference(){
         
-        translate(pos){
-            cylinder(d=5, h=20, center = true, $fn = 50);
+        //Carcasa exterior
+        cube(sizeHueco + 4 * [1, 1, 0], center=true);
+        
+        //Hueco
+        translate([0,0,6]){
+            cube(sizeHueco, center=true);
         }
-    }*/
-    
-    //BNC fotodiodo
-    translate([0,-sizeHueco[1]/2,5]){
-        rotate([90,0,0]){
-            cylinder(d=11,h=20,center=true);
+        
+        //Circuito
+        translate([15,10,-10]){
+            cube([50,50,5], center = true);
         }
-    }
-    
-    //Jack tensión
-    translate([20,-sizeHueco[1]/2,5]){
-        rotate([90,0,0]){
-            cylinder(d=11,h=20,center=true);
+
+        //Regulador
+        translate([-25,10,-10]){
+            cube([25,40,5], center = true);
         }
+
+        
+        //BNC fotodiodo
+        translate([10,-sizeHueco[1]/2,5]){
+            rotate([90,0,0]){
+                cylinder(d=8,h=20,center=true);
+            }
+        }
+        
+        //Jack tensión
+        translate([-30,-sizeHueco[1]/2,5]){
+            rotate([90,0,0]){
+                cylinder(d=8,h=20,center=true);
+            }
+        }
+        
+        //Cable plano de motor
+         translate([-10,-sizeHueco[1]/2,5]){
+            cube([15,10,5], center=true);
+        }
+        
+        //USB
+         translate([30,-sizeHueco[1]/2,5]){
+            cube([10,10,5], center=true);
+        }
+        
+        //Agujero de tapa
+        translate([2.5,0,sizeHueco[2]/2 - 1]){
+            cube(sizeTapa + [0.1,0.1,0.1], center = true);
+        }
+        
+        
     }
-    
-    //Cable plano de motor
-    translate([-20,-sizeHueco[1]/2,5]){
-        cube([20,20,10], center=true);
-    }
-    
-    
-    translate([2.5,0,sizeHueco[2]/2 - 1]){
-        cube(sizeTapa + [0.1,0.1,0.1], center = true);
-    }
+
 }
 
+
+//Tapa
 translate([100,0,0]){
     cube(sizeTapa, center = true);
    
 }
+
+
+
