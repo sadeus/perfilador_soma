@@ -1,6 +1,15 @@
 *~
 *.swp
-.ipynb_checkpoints
 */Thumbs.db
+
+# Python
 *.pyc
 __pycache__
+.ipynb_checkpoints
+
+# LaTex
+*.aux
+*.log
+
+# Particle binaries
+*.bin
