@@ -56,7 +56,7 @@ module engranajes(){
 
     //Engranaje motor
     
-        translate([rC+rG,0,-5]){
+        translate([rC+rG ,0,-5]){
             rotate([0,0, m * zG*180/PI]){
                 difference(){
                     gear(mm_per_tooth = m, number_of_teeth = zC, thickness = 10);

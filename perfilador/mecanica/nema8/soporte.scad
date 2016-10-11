@@ -1,8 +1,3 @@
-
-
-
-
-
 module soporte() {
     
     sizeSoporte = [40,40,60];
@@ -55,7 +50,7 @@ module soporte() {
         
         translate([0,0,alturaEje]){
             rotate([0, 90, 0]){
-                        cylinder(d=6, h=motorSize[2], $fn=50);
+                cylinder(d=6, h=motorSize[2], $fn=50);
             }
         }
         
@@ -66,16 +61,12 @@ module soporte() {
 
 
     //Soporte fotodiodo
-
-        
      translate([distFotodiodo, (8/2 - sizeSoporte[1]/2), alturaEje]){
         difference(){
             translate([-distFotodiodo/4 , 0, 0]){
                 cube([distFotodiodo/2 + 20, 8, 20], center = true);
             }
 
-
-            
             rotate([90,0,0]){
                 cylinder(d = diametroPhInt, h = 30, center = true);
                 translate([0,0,6]){

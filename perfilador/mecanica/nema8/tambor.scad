@@ -2,7 +2,7 @@ rHaz = 4;
 hTotal = 30;
 alturaBase = 12;
 dTambor = 15;
-dEje = 4;
+dEje = 4.1;
 
 $fn = 100;
 
