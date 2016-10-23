@@ -26,19 +26,19 @@ class Sensor {
 	public:
 		unsigned int x[N_MED];
 		unsigned int y[N_MED];
-		
+
 		Sensor() {
 		    pinMode(STEPPER_DIR_PIN, OUTPUT);
 		    pinMode(STEPPER_STEP_PIN, OUTPUT);
-		    
+
 		    digitalWrite(STEPPER_DIR_PIN, HIGH);
 		    for (int i = 0; i < SPEED; i+=10){
 			    analogWrite(STEPPER_STEP_PIN, 128, i);
 			    delay(5);
 		    }
-		   
+
 		}
-        
+
         void measure() {
 		      attachInterrupt(STEPPER_STEP_PIN, &Sensor::countStep, this, RISING);
           delay(N_MED/SPEED);
@@ -69,19 +69,20 @@ void setup() {
   //Clientes
   server.begin();
   Serial.begin(9600);
-    
+
   //ADC speed
   setADCSampleTime(ADC_SampleTime_3Cycles);
-    
+
     //Configuro WiFi
   RGB.control(true);
   RGB.color(255,0,0);
   WiFi.on();
-  WiFi.setCredentials("chogar", "PEP0mkUP5F");
-  WiFi.connect();  
+  WiFi.setCredentials("WiFi-LEC", "coefilec");
+	WiFi.useDynamicIP();
+  WiFi.connect();
 	while (!WiFi.ready()){ }
 	RGB.color(0,255,0);
-  
+
 }
 
 int prevT = 0;
@@ -96,10 +97,10 @@ void loop() {
       prevT = currT;
     }
     if (client.connected()) {
-      
+
       //Recién ahora que me piden, mido
       sens.measure();
-      
+
       //Mando al cliente que escucha en el servidor
       for (int i = 0; i < N_MED; i++){
         client.print(sens.x[i]);
@@ -107,11 +108,10 @@ void loop() {
         client.println(sens.y[i]);
       }
       //Fin de transmisión
-      client.print("END");  
+      client.print("END");
       client.stop();
     }
     else {
       client = server.available();
     }
 }
-
