@@ -1,0 +1,88 @@
+<html>
+<head>
+	<title>Perfilador SOMA</title>
+	<script   src="http://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+	<script>
+		window.setInterval(function(){
+
+			var request = new XMLHttpRequest();
+			request.open('GET', '/perfilador/data', true);
+			request.onreadystatechange = function() {
+				// Makes sure the document is ready to parse.
+				if(request.readyState == 4) {
+					// Makes sure it's found the file.
+					if(request.status == 200) {
+						var blob = this.response;
+						document.getElementById("plot_img").src = 'data:image/png;base64,'+blob;
+					}
+				}
+			};
+			request.send(null);
+
+		}, 500);
+
+	function download() {
+		console.log("raw");
+		var request = new XMLHttpRequest();
+		request.open("GET", "/perfilador/data/raw", true);
+		request.onreadystatechange = function(){
+			console.log(request.status);
+			if (request.readyState == 4) {
+				if (request.status == 200) {
+					var blob = new Blob([this.response]);
+					var link = document.createElement('a');
+					link.href = window.URL.createObjectURL(blob);
+					link.download = "raw.dat";
+					link.click();
+				}
+			}
+		}
+		request.send(null);
+	}
+
+	</script>
+</head>
+<body>
+
+	<div>
+		<nav class="navbar navbar-default">
+			<div class="containter-fluid" >
+				<div class="navbar-header">
+					<a href="#" class="navbar-brand"><span style="font-size: 22px; font-weight:bolder;">S<i  class="fa fa-circle"></i>MA</span></a>
+					<button class="btn btn-default navbar-right navbar-btn" ng-class="{automaticState: bg-sucess}" toggle ng-model="automaticState">Automático</button>
+				</div>
+			</div>
+		</nav>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-4 well">
+					<p class="h2">Perfilador</p>
+					<p class="h3">Diametro promedio del haz</p>
+					<p class="h4" id="data"></p>
+					<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Mostrar datos crudos</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">Gráficos crudos</h4>
+				</div>
+				<div class="modal-body">
+					<img class="img-responsive" id="plot_img">
+					<button type="button" class="btn btn-primary btn-lg" onclick="download()">Bajar datos crudos</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

@@ -16,14 +16,13 @@ import telnetlib
 from io import BytesIO
 import base64
 
-class Perfilador():
-    """Clase de manejo de Perfilador de haz del Proyecto SOMA. El sensor está
+class Polarimetro():
+    """Clase de manejo de Polarimetro de haz del Proyecto SOMA. El sensor está
     implementado con el uC Particle Photon, con código escrito en C++.
 
     Parametros
     -----------
-        ip: IP del Perfilador (Telnet)
-        R:  Radio del tambor del perfilador. Por defecto 10mm
+        ip: IP del Polarimetro (Telnet)
 
     Propiedades
     -----------
@@ -37,13 +36,11 @@ class Perfilador():
         process_data: Obtiene una lista de ancho de haz a partir de los datos ingresados. También devuelve los ajustes y los indices de los datos donde se efecutó el ajuste
     """
 
-    def __init__(self, ip = "10.200.1.219", R = 10):
-        self.__R = R
+    def __init__(self, ip = "10.200.1.219"):
         self.__ip = ip
 
     def __str__(self):
-
-        print("Polarimetro SOMA. IP: {}. R: {}".format(t, self.__ip, self.__R))
+        print("Polarimetro SOMA. IP: {}.".format(t, self.__ip))
 
     def update(self):
         '''Devuelve los datos actualizados del sensor'''
@@ -81,47 +78,12 @@ class Perfilador():
         V = data[:,1] / data[:,1].max()
 
         #Obtengo automáticamente la frecuencia, a partir de FFT
-        f = Perfilador.__get_freq(T,V)
-
-        filt = sp.signal.medfilt(V, kernel_size = 25)
-        gauss = np.abs(sp.ndimage.gaussian_filter(filt, 10, order=1))
-        gauss = gauss/gauss.max()
-
         fig = plt.figure(1)
         plt.plot(T, V,'ro')
         plt.grid()
         plt.xlabel("t[s]")
         plt.ylabel("A[1]")
 
-        #Plot de debuggeo
-        #plt.plot(T, gauss*V.max(), 'b-')
-
-        peaks = sp.signal.find_peaks_cwt(gauss, np.array([20]))
-        #plt.plot(T[peaks],V[peaks],'gd')
-
-        err_f = lambda x, a, b, c, d: a + b * sp.special.erf(np.sqrt(2)*(x - c) / d)
-
-        w = 2 * np.pi * f
-        sigma = []
-        DeltaT = 0.2/f
-        indList = []
-        for i in peaks:
-            try:
-                ind = np.abs(T - T[i]) < DeltaT
-                indList.append(ind)
-                x = T[ind]
-                y = V[ind]
-                p0 = [y.max()/2, -y.max()/2, (x.max() + x.min())/2, 0.5*(x.max() - x.min())]
-
-                p, cov = sp.optimize.curve_fit(err_f, x, y, p0 = p0)
-                t = np.linspace(x.min(), x.max() , 1000)
-                plt.plot(t, err_f(t, *p))
-                sigma.append(p[3] * self.__R * w)
-            except ValueError:
-                pass
-            except RuntimeError:
-                print("No se pudo ajustar")
-                pass
         figfile = BytesIO()
         plt.savefig(figfile, format='png')
         figfile.seek(0)
