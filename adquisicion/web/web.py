@@ -1,4 +1,4 @@
-from flask import Flask, make_response, render_template, send_file, request
+from flask import Flask, Response, render_template, send_file, request, jsonify
 from perfilador import Perfilador
 from polarimetro import Polarimetro
 from io import BytesIO
@@ -10,9 +10,9 @@ import time
 
 app  = Flask(__name__)
 port = 9000
-perf = Perfilador(ip = "10.200.1.219")
-pol  = Polarimetro(ip = "10.200.1.219")
-test = True
+perf = Perfilador(ip = "192.168.0.35")
+pol  = Polarimetro(ip = "192.168.0.35")
+test = False
 
 @app.route("/polarimetro")
 def get_polarimetro():
@@ -23,6 +23,7 @@ def get_perfilador():
     return render_template("perfilador.html")
 
 @app.route("/polarimetro/data")
+@app.route("/polarimetro/plot")
 @app.route("/polarimetro/data/raw")
 def get_polarimetro_data():
     if test:
@@ -32,8 +33,11 @@ def get_polarimetro_data():
         data = pol.update()
         #perf.print_data(data, "plot.png")
     if not "raw" in request.url:
-        sigma, fig = pol.process_data(data)
-        return fig
+        diff, fig = pol.process_data(data)
+        if "plot" in request.url:
+            return fig
+        else:
+            return diff
     else:
         print("raw")
         output = BytesIO()
@@ -41,6 +45,7 @@ def get_polarimetro_data():
         return send_file(output)
 
 @app.route("/perfilador/data")
+@app.route("/perfilador/plot")
 @app.route("/perfilador/data/raw")
 def get_perfilador_data():
     if test:
@@ -50,8 +55,12 @@ def get_perfilador_data():
         data = perf.update()
         #perf.print_data(data, "plot.png")
     if not "raw" in request.url:
-        sigma, fig = perf.process_data(data)
-        return fig
+        sigmas, fig = perf.process_data(data)
+        if "plot" in request.url:
+            return fig
+        else:
+            ret = {"avg_sigma": np.mean(sigmas), "std_sigma": np.std(sigmas), "plot": fig}
+            return json.dumps(ret), 200, {'Content-Type': 'application/json; charset=utf-8'}
     else:
         return json.dumps(data.tolist())
 

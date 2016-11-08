@@ -7,17 +7,19 @@
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
 	<script>
-		window.setInterval(function(){
 
 			var request = new XMLHttpRequest();
-			request.open('GET', '/polarimetro/data', true);
+			var url = "/polarimetro/data";
+			request.open('GET', url, true);
 			request.onreadystatechange = function() {
 				// Makes sure the document is ready to parse.
 				if(request.readyState == 4) {
 					// Makes sure it's found the file.
 					if(request.status == 200) {
-						var blob = this.response;
-						document.getElementById("plot_img").src = 'data:image/png;base64,'+blob;
+							var data = JSON(this.response);
+							document.getElementById("plot_img").src = 'data:image/png;base64,'+data.plot;
+							console.log(data.avg_sigma);
+							document.getElementById("data").innerHTML = data["max_min"] + " &plusmn; " + data["max_min_std"];
 					}
 				}
 			};

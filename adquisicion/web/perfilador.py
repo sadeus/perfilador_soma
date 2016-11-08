@@ -87,6 +87,7 @@ class Perfilador():
         gauss = np.abs(sp.ndimage.gaussian_filter(filt, 10, order=1))
         gauss = gauss/gauss.max()
 
+        plt.clf()
         fig = plt.figure(1)
         plt.plot(T, V,'ro')
         plt.grid()
@@ -120,21 +121,9 @@ class Perfilador():
             except ValueError:
                 pass
             except RuntimeError:
-                print("No se pudo ajustar")
                 pass
         figfile = BytesIO()
         plt.savefig(figfile, format='png')
         figfile.seek(0)
-        figdata_png = base64.b64encode(figfile.getvalue())
+        figdata_png = base64.b64encode(figfile.getvalue()).decode("utf-8")
         return sigma, figdata_png
-
-    def print_data(self, data, figname):
-        T = (data[:,0] - data[:,0].min()) * 1e-6
-        V = data[:,1] / data[:,1].max()
-
-        fig = plt.figure(1)
-        plt.plot(T, V,'ro')
-        plt.grid()
-        plt.xlabel("t[s]")
-        plt.ylabel("A[1]")
-        plt.savefig(figname, format="png")
