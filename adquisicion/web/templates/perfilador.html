@@ -27,10 +27,24 @@
 			};
 			request.send(null);
 
-		}, 500);
+		}, 2000);
+
+	function reset() {
+		var request = new XMLHttpRequest();
+		request.open("GET", "/sensor/reset", true);
+		document.getElementById('resetBtn').setAttribute('disabled','disabled');
+		request.onreadystatechange = function(){
+			console.log(request.status);
+			if (request.readyState == 4) {
+				if (request.status == 200) {
+					document.getElementById('resetBtn').removeAttribute('disabled');
+				}
+			}
+		}
+		request.send(null);
+	}
 
 	function download() {
-		console.log("raw");
 		var request = new XMLHttpRequest();
 		request.open("GET", "/perfilador/data/raw", true);
 		request.onreadystatechange = function(){
@@ -56,7 +70,8 @@
 			<div class="containter-fluid" >
 				<div class="navbar-header">
 					<a href="#" class="navbar-brand"><span style="font-size: 22px; font-weight:bolder;">S<i  class="fa fa-circle"></i>MA</span></a>
-					<button class="btn btn-default navbar-right navbar-btn" ng-class="{automaticState: bg-sucess}" toggle ng-model="automaticState">Automático</button>
+					<button class="btn btn-default navbar-right navbar-btn">Automático</button>
+					<button id='resetBtn' class="btn btn-default navbar-right navbar-btn" click='reset()'>Reinicio de sensor</button>
 				</div>
 			</div>
 		</nav>

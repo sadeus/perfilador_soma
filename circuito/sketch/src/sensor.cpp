@@ -1,6 +1,22 @@
 #include "application.h"
 
-//#define DEBUG //Modo debug
+#define PORT 7662
+#define OLED 0 //Uso del OLED
+
+//Modo manual
+SYSTEM_MODE(MANUAL);
+//System.disable(SYSTEM_FLAG_RESET_NETWORK_ON_CLOUD_ERRORS);
+
+
+#define WIFI 1  //Uso del WiFi
+#define SSID "wifi_sch"
+#define PASS "fliaschiavi2061"
+//#define SSID "WiFi-LEC"
+//#define PASS "coefilec"
+
+
+
+
 #define SENSOR 0 //0 => Perfilador, 1 => Polarizador
 #if SENSOR == 0
 #define SPEED 6000
@@ -8,36 +24,35 @@
 #define SPEED 2000
 #endif
 
-//Modo manual
-SYSTEM_MODE(MANUAL);
 
 //Server telnet
-TCPServer server = TCPServer(23);
+TCPServer server = TCPServer(PORT);
 TCPClient client;
 
 //Variables para mediciones
 #define N_MED 4000
 
-//Pines del motor paso a paso
+//Pines para el motor y el ADC
 #define STEPPER_DIR_PIN D0
 #define STEPPER_STEP_PIN D1
+#define SENSOR_PIN A0
 
 class Sensor {
 	public:
-		unsigned int x[N_MED];
-		unsigned int y[N_MED];
+			unsigned int x[N_MED];
+			unsigned int y[N_MED];
 
-		Sensor() {
-		    pinMode(STEPPER_DIR_PIN, OUTPUT);
-		    pinMode(STEPPER_STEP_PIN, OUTPUT);
+			Sensor() {
+			    pinMode(STEPPER_DIR_PIN, OUTPUT);
+			    pinMode(STEPPER_STEP_PIN, OUTPUT);
 
-		    digitalWrite(STEPPER_DIR_PIN, HIGH);
-		    for (int i = 0; i < SPEED; i+=10){
-			    analogWrite(STEPPER_STEP_PIN, 128, i);
-			    delay(5);
-		    }
+			    digitalWrite(STEPPER_DIR_PIN, HIGH);
+			    for (int i = 0; i < SPEED; i+=10){
+				    analogWrite(STEPPER_STEP_PIN, 128, i);
+				    delay(5);
+			    }
 
-		}
+			}
 
         void measure() {
 		      attachInterrupt(STEPPER_STEP_PIN, &Sensor::countStep, this, RISING);
@@ -55,7 +70,7 @@ class Sensor {
     			else {
               pinSetFast(D7);
               x[step] = step;
-              y[step] = analogRead(A0);
+              y[step] = analogRead(SENSOR_PIN);
         			step++;
     			}
 		}
@@ -63,7 +78,6 @@ class Sensor {
 };
 
 Sensor sens;  //Construyo el sensor, inicializa el motor
-
 
 void setup() {
   //Clientes
@@ -73,20 +87,24 @@ void setup() {
   //ADC speed
   setADCSampleTime(ADC_SampleTime_3Cycles);
 
-    //Configuro WiFi
-  RGB.control(true);
-  RGB.color(255,0,0);
-  WiFi.on();
-  WiFi.setCredentials("WiFi-LEC", "coefilec");
-	WiFi.useDynamicIP();
-  WiFi.connect();
-	while (!WiFi.ready()){ }
-	RGB.color(0,255,0);
-
+  //Configuro WiFi
+	#if WIFI == 1
+	if (WiFi.clearCredentials()){
+		RGB.control(true);
+	  RGB.color(255,0,0);
+		WiFi.on();
+		WiFi.setCredentials(SSID, PASS);
+		WiFi.useDynamicIP();
+	  WiFi.connect();
+		while (!WiFi.ready()){ }
+		RGB.color(0,255,0);
+	}
+	#endif
 }
 
+//Variables para imprimir IP por puerto serie
 int prevT = 0;
-int deltaT = 1000;
+int deltaT = 500;
 
 void loop() {
 
@@ -110,6 +128,7 @@ void loop() {
       //Fin de transmisión
       client.print("END");
       client.stop();
+
     }
     else {
       client = server.available();
