@@ -6,65 +6,9 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
-	<script>
-		window.setInterval(function(){
-			var request = new XMLHttpRequest();
-			var url = "/perfilador/data";
-			request.open('GET', url, true);
-			request.onreadystatechange = function() {
-				// Makes sure the document is ready to parse.
-				if(request.readyState == 4) {
-					// Makes sure it's found the file.
-					if(request.status == 200) {
-						var data = JSON.parse(this.response);
-
-						document.getElementById("plot_img").src = 'data:image/png;base64,'+data.plot;
-						var avg = Number(Math.round(data["avg_sigma"] + 'e2') + 'e-2');
-						var std = Number(Math.round(data["std_sigma"] + 'e2') + 'e-2');
-						document.getElementById("data").innerHTML = avg + " &plusmn; " + std;
-					}
-				}
-			};
-			request.send(null);
-
-		}, 2000);
-
-	function reset() {
-		var request = new XMLHttpRequest();
-		request.open("GET", "/sensor/reset", true);
-		document.getElementById('resetBtn').setAttribute('disabled','disabled');
-		request.onreadystatechange = function(){
-			console.log(request.status);
-			if (request.readyState == 4) {
-				if (request.status == 200) {
-					document.getElementById('resetBtn').removeAttribute('disabled');
-				}
-			}
-		}
-		request.send(null);
-	}
-
-	function download() {
-		var request = new XMLHttpRequest();
-		request.open("GET", "/perfilador/data/raw", true);
-		request.onreadystatechange = function(){
-			console.log(request.status);
-			if (request.readyState == 4) {
-				if (request.status == 200) {
-					var blob = new Blob([this.response]);
-					var link = document.createElement('a');
-					link.href = window.URL.createObjectURL(blob);
-					link.download = "raw.dat";
-					link.click();
-				}
-			}
-		}
-		request.send(null);
-	}
-	</script>
+	<script src='static/app.js'></script>
 </head>
 <body>
-
 	<div>
 		<nav class="navbar navbar-default">
 			<div class="containter-fluid" >

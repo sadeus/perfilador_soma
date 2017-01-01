@@ -44,21 +44,41 @@ class Sensor():
 
     __port = 7662
 
-    def __init__(self, network = "10.200.0.0/24", R = 10, debug=False):
+    def __init__(self, network = "10.200.0.0/24", ip=None, R = 10, debug=False):
         self.__DEBUG = debug
-        socket.setdefaulttimeout(0.1)
-        ips = ipaddr.ip_network(network)
-        if self.__DEBUG:
-            print('Searching instrument with port {}'.format(Sensor.__port))
-        for ip in ips:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            if s.connect_ex((str(ip), Sensor.__port)) == 0:
-                if self.__DEBUG:
-                    print("Instrument with IP: " + str(ip))
-                self.__ip = str(ip)
+        socket.setdefaulttimeout(1.0)
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if ip == None:
+            ips = ipaddr.ip_network(network)
+            if self.__DEBUG:
+                print('Searching instrument with port {}'.format(Sensor.__port))
+            for ip in ips:
+
+                if s.connect_ex((str(ip), Sensor.__port)) == 0:
+                    if self.__DEBUG:
+                        print("Instrument with IP: " + str(ip))
+                    self.__ip = str(ip)
+                    s.close()
+                    break
                 s.close()
-                break
-            s.close()
+        else:
+            if self.__DEBUG:
+                print('Instrument in IP {} and port {}'.format(ip, Sensor.__port))
+                print('Testing connection')
+            try:
+                if s.connect_ex((str(ip), Sensor.__port)) == 0:
+                    s.close()
+                    if self.__DEBUG:
+                        print('Connection successful')
+                    self.__ip = ip
+                else:
+                    if self.__DEBUG:
+                        print('Connection not working')
+            except socket.timeout:
+                if self.__DEBUG:
+                    print('Connection not working. Timeout')
+
+
 
         self.__R = R
 
@@ -86,6 +106,7 @@ class Sensor():
         except (EOFError, ValueError) as e:
             return 'Parse or connection error'
         except (AttributeError, socket.timeout) as e:
+            print(e)
             return "Instrument not found"
 
 
