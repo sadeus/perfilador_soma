@@ -4,18 +4,21 @@
 #define OLED 0 //Uso del OLED
 
 //Modo manual
-SYSTEM_MODE(MANUAL);
+
 //System.disable(SYSTEM_FLAG_RESET_NETWORK_ON_CLOUD_ERRORS);
 
 
 #define WIFI 1  //Uso del WiFi
+#define CLOUD 1 //Uso de Cloud
 #define SSID "wifi_sch"
 #define PASS "fliaschiavi2061"
 //#define SSID "WiFi-LEC"
 //#define PASS "coefilec"
+String ip;
 
-
-
+#if CLOUD == 0
+	SYSTEM_MODE(MANUAL);
+#endif
 
 #define SENSOR 0 //0 => Perfilador, 1 => Polarizador
 #if SENSOR == 0
@@ -97,6 +100,13 @@ void setup() {
 		WiFi.useDynamicIP();
 	  WiFi.connect();
 		while (!WiFi.ready()){ }
+
+		ip = String(WiFi.localIP());
+
+		#if CLOUD == 1
+		Particle.variable("ip", ip);
+		#endif
+
 		RGB.color(0,255,0);
 	}
 	#endif
@@ -111,7 +121,7 @@ void loop() {
     //Devuelvo la IP
     int currT = millis();
     if (currT - prevT > deltaT) {
-      Serial.println(WiFi.localIP());
+      Serial.println(ip);
       prevT = currT;
     }
     if (client.connected()) {
