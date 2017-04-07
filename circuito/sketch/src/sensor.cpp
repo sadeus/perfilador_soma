@@ -9,11 +9,11 @@
 
 
 #define WIFI 1  //Uso del WiFi
-#define CLOUD 1 //Uso de Cloud
-#define SSID "wifi_sch"
-#define PASS "fliaschiavi2061"
-//#define SSID "WiFi-LEC"
-//#define PASS "coefilec"
+#define CLOUD 0 //Uso de Cloud
+//#define SSID "wifi_sch"
+//#define PASS "fliaschiavi2061"
+#define SSID "WiFi-LEC"
+#define PASS "coefilec"
 String ip;
 
 #if CLOUD == 0
@@ -81,8 +81,12 @@ class Sensor {
 };
 
 Sensor sens;  //Construyo el sensor, inicializa el motor
+int led = D7;
 
 void setup() {
+    
+  pinMode(led, OUTPUT);
+  pinResetFast(led);
   //Clientes
   server.begin();
   Serial.begin(9600);
@@ -94,11 +98,11 @@ void setup() {
 	#if WIFI == 1
 	if (WiFi.clearCredentials()){
 		RGB.control(true);
-	  RGB.color(255,0,0);
+	    RGB.color(255,0,0);
 		WiFi.on();
 		WiFi.setCredentials(SSID, PASS);
 		WiFi.useDynamicIP();
-	  WiFi.connect();
+        WiFi.connect();
 		while (!WiFi.ready()){ }
 
 		ip = String(WiFi.localIP());
@@ -108,23 +112,31 @@ void setup() {
 		#endif
 
 		RGB.color(0,255,0);
+        digitalWrite(led, HIGH);
 	}
 	#endif
 }
 
 //Variables para imprimir IP por puerto serie
 int prevT = 0;
-int deltaT = 500;
+int deltaT = 1000;
+
 
 void loop() {
 
     //Devuelvo la IP
-    int currT = millis();
-    if (currT - prevT > deltaT) {
-      Serial.println(ip);
-      prevT = currT;
-    }
-    if (client.connected()) {
+    //int currT = millis();
+    
+    digitalWrite(led, LOW);
+    delay(2000);
+    digitalWrite(led, HIGH);
+    delay(2000);
+    Serial.println("Ip");
+    //Serial.println("Ip");
+    //Serial.println(ip);
+    
+    
+    /*if (client.connected()) {
 
       //Recién ahora que me piden, mido
       sens.measure();
@@ -142,5 +154,5 @@ void loop() {
     }
     else {
       client = server.available();
-    }
+    }*/
 }

@@ -1,7 +1,8 @@
 *~
 *.swp
 */Thumbs.db
-
+# npm
+node_modules
 # Python
 *.pyc
 __pycache__
