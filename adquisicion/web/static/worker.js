@@ -6,7 +6,7 @@ setInterval(function(){
     if(request.readyState == 4) {
       // Makes sure it's found the file.
       if(request.status == 200) {
-        var data = JSON.parse(thcis.response);
+        var data = JSON.parse(this.response);
         self.postMessage(data);
       }
     }

@@ -15,23 +15,32 @@
 				<div class="navbar-header">
 					<a href="#" class="navbar-brand"><span style="font-size: 22px; font-weight:bolder;">S<i  class="fa fa-circle"></i>MA</span></a>
 					<button class="btn btn-default navbar-right navbar-btn">Automático</button>
-					<button id='resetBtn' class="btn btn-default navbar-right navbar-btn" click='reset()'>Reinicio de sensor</button>
+					<button id='resetBtn' class="btn btn-default navbar-right navbar-btn" onclick='resetSensor()'>Reinicio de sensor</button>
+					<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    	Sensor
+    				<span class="caret"></span>
+  				</button>
+				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+				    <li><a href="#" onclick="setSensor(1)">Perfilador</a></li>
+				    <li><a href="#" onclick="setSensor(2)">Polarimetro</a></li>
+				  </ul>
+				</div>
 				</div>
 			</div>
 		</nav>
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-12 col-md-4 well">
-					<p class="h2">Perfilador</p>
-					<p class="h3">Diametro promedio del haz</p>
+					<p class="h3" id="info">Diametro promedio del haz</p>
 					<p class="h4" id="data"></p>
-					<button type="button" onclick="set_show_plot()" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Mostrar datos crudos</button>
+					<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#plotModal">Mostrar datos crudos</button>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="plotModal" tabindex="-1" role="dialog" aria-labelledby="plotModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -40,7 +49,7 @@
 				</div>
 				<div class="modal-body">
 					<img class="img-responsive" id="plot_img">
-					<button type="button" class="btn btn-primary btn-lg" onclick="download()">Bajar datos crudos</button>
+					<button type="button" class="btn btn-primary btn-lg" onclick="downloadRawData()">Bajar datos crudos</button>
 				</div>
 			</div>
 		</div>

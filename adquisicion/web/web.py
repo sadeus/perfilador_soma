@@ -9,10 +9,12 @@ app  = Flask(__name__)
 port = 9000
 network = '192.168.0.0/24'
 ip = '192.168.0.122'
+
 sensor = Sensor(ip = ip, network = network, debug = debug)
 
 @app.route('/sensor/reset')
 def reset_sensor():
+    global sensor
     sensor = Sensor(network=network, ip=ip, debug=debug)
     return 'Sensor connection reseted', 200
 
