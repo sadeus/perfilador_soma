@@ -41,57 +41,54 @@ class Sensor():
 
     process_data: Obtiene una lista de ancho de haz a partir de los datos ingresados. También devuelve los ajustes y los indices de los datos donde se efecutó el ajuste
     """
+    Perfilador = 1
+    Polarimetro = 2
 
     __port = 7662
+    __R = 10
 
-    def __init__(self, network = "10.200.0.0/24", ip=None, R = 10, debug=False):
+    def __init__(self, ip="10.200.0.0", debug=False, sensor_type = Perfilador):
         self.__DEBUG = debug
+        self.__type = sensor_type
         socket.setdefaulttimeout(1.0)
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        if ip == None:
-            ips = ipaddr.ip_network(network)
-            if self.__DEBUG:
-                print('Searching instrument with port {}'.format(Sensor.__port))
-            for ip in ips:
-
-                if s.connect_ex((str(ip), Sensor.__port)) == 0:
-                    if self.__DEBUG:
-                        print("Instrument with IP: " + str(ip))
-                    self.__ip = str(ip)
-                    s.close()
-                    break
+        if self.__DEBUG:
+            print('Sensor in IP {} and port {}'.format(ip, Sensor.__port))
+            print('Testing connection')
+        try:
+            if s.connect_ex((str(ip), Sensor.__port)) == 0:
                 s.close()
-        else:
-            if self.__DEBUG:
-                print('Instrument in IP {} and port {}'.format(ip, Sensor.__port))
-                print('Testing connection')
-            try:
-                if s.connect_ex((str(ip), Sensor.__port)) == 0:
-                    s.close()
-                    if self.__DEBUG:
-                        print('Connection successful')
-                    self.__ip = ip
-                else:
-                    if self.__DEBUG:
-                        print('Connection not working')
-            except socket.timeout:
                 if self.__DEBUG:
-                    print('Connection not working. Timeout')
-
-
-
-        self.__R = R
-
-
+                    print('Connection successful')
+                self.__ip = ip
+            else:
+                if self.__DEBUG:
+                    print('Connection not working')
+        except socket.timeout:
+            if self.__DEBUG:
+                print('Connection not working. Timeout')
 
     def __str__(self):
-        print("Perfilador SOMA. IP: {}. R: {}".format(t, self.__ip, self.__R))
+        print("Sensor SOMA. IP: {}".format(t, self.__ip))
+
+    def ip(self):
+        return self.__ip
+
+    def sensor_type(self):
+        return self.__type
+
+    def connected(self):
+        try:
+            if self.__ip is not None:
+                return True
+        except:
+            return False
 
     def update(self):
         '''Devuelve los datos actualizados del sensor'''
         try:
             if self.__DEBUG:
-                print('Conecting to instrument with IP ' + self.__ip)
+                print('Conecting to sensor with IP ' + self.__ip)
             tel = telnetlib.Telnet(self.__ip, port = Sensor.__port)
             s = tel.read_until(b"END").decode().replace("END","")
             tel.close()
@@ -107,7 +104,7 @@ class Sensor():
             return 'Parse or connection error'
         except (AttributeError, socket.timeout) as e:
             print(e)
-            return "Instrument not found"
+            return "Sensor not found"
 
 
 
@@ -129,7 +126,7 @@ class Sensor():
         #Devuelvo la frecuencia, como float
         return freq[max_fft][0]
 
-    def process_data(self, data, type_flag = True):
+    def process_data(self, data):
         '''Procesa los datos ingresados, devolviendo el tamaño de los haces,
         el ajuste de la función error y la ubicación de cada ajuste'''
 
@@ -144,11 +141,12 @@ class Sensor():
         plt.ylabel("A[V]")
 
         try:
+            if self.__type:
+                #Perfilador
 
-            if type_flag:
-                #Obtengo automáticamente la frecuencia, a partir de FFT
-                f = Perfilador.__get_freq(T,V)
+                f = Sensor.__get_freq(T,V) #Obtengo automáticamente la frecuencia, a partir de FFT
 
+                #Filtro gaussiano para eliminar ruido
                 filt = sp.signal.medfilt(V, kernel_size = 25)
                 gauss = np.abs(sp.ndimage.gaussian_filter(filt, 10, order=1))
                 gauss = gauss/gauss.max()
@@ -175,10 +173,11 @@ class Sensor():
                     p, cov = sp.optimize.curve_fit(err_f, x, y, p0 = p0)
                     t = np.linspace(x.min(), x.max() , 1000)
                     plt.plot(t, err_f(t, *p))
-                    sigma.append(p[3] * self.__R * w)
-                else:
-                    diff = (np.max(V) - np.min(V)) / (np.max(V) + np.min(V))
-                    sigma.append(diff)
+                    sigma.append(p[3] * Sensor.__R * w)
+            else:
+                #Polarimetro
+                diff = (np.max(V) - np.min(V)) / (np.max(V) + np.min(V))
+                sigma.append(diff)
         except:
             sigma = [0]
         finally:
