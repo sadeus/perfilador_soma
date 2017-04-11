@@ -10,8 +10,6 @@
 
 #define WIFI 1  //Uso del WiFi
 #define CLOUD 0 //Uso de Cloud
-//#define SSID "wifi_sch"
-//#define PASS "fliaschiavi2061"
 #define SSID "WiFi-LEC"
 #define PASS "coefilec"
 String ip;
@@ -66,12 +64,10 @@ class Sensor {
 		volatile int step = 0;
 		void countStep(){
 			if (step == N_MED) {
-              pinResetFast(D7);
         			step = 0;
               detachInterrupt(STEPPER_STEP_PIN);
     			}
     			else {
-              pinSetFast(D7);
               x[step] = step;
               y[step] = analogRead(SENSOR_PIN);
         			step++;
@@ -81,12 +77,9 @@ class Sensor {
 };
 
 Sensor sens;  //Construyo el sensor, inicializa el motor
-int led = D7;
 
 void setup() {
-    
-  pinMode(led, OUTPUT);
-  pinResetFast(led);
+
   //Clientes
   server.begin();
   Serial.begin(9600);
@@ -96,24 +89,23 @@ void setup() {
 
   //Configuro WiFi
 	#if WIFI == 1
-	if (WiFi.clearCredentials()){
-		RGB.control(true);
-	    RGB.color(255,0,0);
-		WiFi.on();
-		WiFi.setCredentials(SSID, PASS);
-		WiFi.useDynamicIP();
-        WiFi.connect();
-		while (!WiFi.ready()){ }
+		if (WiFi.clearCredentials()){
+			RGB.control(true);
+		  RGB.color(255,0,0);
+			WiFi.on();
+			WiFi.setCredentials(SSID, PASS);
+			WiFi.useDynamicIP();
+	    WiFi.connect();
+			while (!WiFi.ready()){ }
 
-		ip = String(WiFi.localIP());
+			ip = String(WiFi.localIP());
 
-		#if CLOUD == 1
-		Particle.variable("ip", ip);
-		#endif
+			#if CLOUD == 1
+				Particle.variable("ip", ip);
+			#endif
 
-		RGB.color(0,255,0);
-        digitalWrite(led, HIGH);
-	}
+			RGB.color(0,255,0);
+		}
 	#endif
 }
 
@@ -125,18 +117,14 @@ int deltaT = 1000;
 void loop() {
 
     //Devuelvo la IP
-    //int currT = millis();
-    
-    digitalWrite(led, LOW);
-    delay(2000);
-    digitalWrite(led, HIGH);
-    delay(2000);
-    Serial.println("Ip");
-    //Serial.println("Ip");
-    //Serial.println(ip);
-    
-    
-    /*if (client.connected()) {
+    int currT = millis();
+  	if (currT - prevT > deltaT) {
+    	Serial.print("Ip: ");
+    	Serial.println(WiFi.localIP());
+			prevT = currT;
+		}
+
+    if (client.connected()) {
 
       //Recién ahora que me piden, mido
       sens.measure();
@@ -154,5 +142,5 @@ void loop() {
     }
     else {
       client = server.available();
-    }*/
+    }
 }
