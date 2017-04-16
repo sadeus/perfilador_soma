@@ -8,7 +8,7 @@ import numpy as np
 debug = False
 app  = Flask(__name__)
 port = 9000
-ip = '192.168.0.131'
+ip = '10.200.1.213'
 
 sensor = Sensor(ip = ip, debug = debug, sensor_type = Sensor.Perfilador)
 

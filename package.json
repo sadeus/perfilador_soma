@@ -1,0 +1,23 @@
+{
+  "name": "soma_ph_motor",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "particle-cli": "latest"
+  },
+  "devDependencies": {
+    "readline-sync": "latest",
+    "rimraf": "latest"
+  },
+  "scripts": {
+    "postinstall": "pip install -r ./software/requirements.txt",
+    "login": "particle login",
+    "start": "python ./software/web.py",
+    "ip": "particle serial monitor",
+    "clean": "rimraf ./firmware/*.bin",
+    "compile": "npm run clean && particle compile photon ./firmware/src --saveTo ./firmware/perfilador.bin --target 0.6.0",
+    "upload": "particle flash --usb perfilador.bin"
+  },
+  "author": "Proyect SOMA",
+  "license": "MIT"
+}
