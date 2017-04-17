@@ -1,5 +1,4 @@
-# labo6_7
-Material creado durante el laboratorio 6 y 7 de la carrera de Ciencias Físicas de FCEyN, UBA
+# Perfilador/Polarimetro SOMA
 
 ## Contenido
 Se crearon sensores optomecánicos portátiles, para poder medir cambios de los haces de los setups del laboratorio. Todo el marco del proyecto SOMA
@@ -36,16 +35,16 @@ Esto instala las dependencias de firmware y software. Para obtener ayuda de los 
 ## Dependencias
 
 ### Software
-- Python ^v3.5.0
-- Numpy >v1.11.3
-- Pandas >v0.19.2
-- Matplotlib >v1.9.0
-- Scipy >v0.18.1
-- Flask >v0.12
+- Python v3.5.0
+- Numpy v1.11.3
+- Pandas v0.19.2
+- Matplotlib v2.0.0
+- Scipy v0.18.1
+- Flask v0.12
 - Web browser (Firefox, Chrome, Safari, _no funciona en IE_)
 
 ### Firmware
 Para compilar, flashear y escuchar el puerto Serie del uC es necesario tener:
-- NodeJS >v6.0
-- Particle-cli ^v1.21.0
+- NodeJS v6.0
+- Particle-cli v1.21.0
 - readline-sync (para interfaz interactiva)
